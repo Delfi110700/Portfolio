@@ -26,7 +26,7 @@ const RESUME_DATA = {
   location: "Caloocan City, Philippines",
   phone: "09930068354",
   email: "fideljuanresuello110700@gmail.com",
-  linkedin: "https://linkedin.com/in/fidel-juan-resuello",
+  linkedin: "https://www.linkedin.com/in/fidel-resuello/",
   summary: "I’m an AI Automation & CRM Specialist who builds workflows that cut manual tasks by up to 70% and get leads to respond in under 5 minutes. My systems boost conversions, improve pipeline visibility, and eliminate revenue leaks, turning chaotic operations into smooth, profitable processes.",
   skills: [
     "CRM Setup & Customization",
@@ -100,7 +100,9 @@ const RESUME_DATA = {
       description: "Content Repurposing, Asana CRM Automation, Lead Enrichment",
       tags: ["Zapier", "Asana", "CRM", "Automation"],
       color: "text-orange-500",
-      logoUrl: "https://logo.clearbit.com/zapier.com"
+      logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
+      bgImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800&h=450", // 3D network nodes
+      cta: "View Case Study >"
     },
     {
       platform: "Make",
@@ -108,16 +110,20 @@ const RESUME_DATA = {
       description: "Automated Export Account Transactions from Xero > Upload CSV to Asana, Auto Sort Gmail Attachments on Drive",
       tags: ["Make.com", "Xero", "Asana", "Google Drive"],
       color: "text-violet-500",
-      logoUrl: "https://logo.clearbit.com/make.com"
+      logoUrl: "https://cdn.simpleicons.org/make/6D28D9",
+      bgImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800&h=450", // Circuit board macro
+      cta: "View Case Study >"
     },
     {
       platform: "Go High Level",
       title: "Go High Level",
       description: "Advanced CRM & Marketing Automation workflows.",
       tags: ["GHL", "CRM", "Marketing"],
-      color: "text-blue-500",
+      color: "text-blue-400",
       isComingSoon: true,
-      logoUrl: "https://logo.clearbit.com/gohighlevel.com"
+      logoUrl: "https://cdn.simpleicons.org/gohighlevel/2563EB",
+      bgImage: "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800&h=450", // SaaS Dashboard
+      cta: "View Case Study >"
     },
     {
       platform: "n8n",
@@ -126,7 +132,9 @@ const RESUME_DATA = {
       tags: ["n8n", "Self-hosted", "Automation"],
       color: "text-red-500",
       isComingSoon: true,
-      logoUrl: "https://logo.clearbit.com/n8n.io"
+      logoUrl: "https://cdn.simpleicons.org/n8n/EA4B71",
+      bgImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800&h=450", // Server racks
+      cta: "Coming Soon"
     }
   ],
   references: [
@@ -156,16 +164,16 @@ const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string 
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      className="flex items-center gap-3 mb-2"
+      className="flex items-center gap-3 mb-3"
     >
-      <div className="h-px w-8 bg-brand-primary" />
-      <span className="text-brand-primary font-mono text-xs uppercase tracking-widest">{subtitle || "Section"}</span>
+      <div className="h-px w-10 bg-brand-primary/50" />
+      <span className="text-brand-primary font-mono text-[10px] uppercase tracking-[0.2em] font-bold">{subtitle || "Section"}</span>
     </motion.div>
     <motion.h2 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="text-4xl md:text-5xl font-bold text-white"
+      className="text-4xl md:text-6xl font-bold text-white tracking-tight"
     >
       {title}
     </motion.h2>
@@ -315,7 +323,7 @@ export default function App() {
             <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center">
               <span className="text-bg-dark font-bold text-xl">F</span>
             </div>
-            <span className="text-white font-bold text-xl tracking-tight hidden sm:block">
+            <span className="text-white font-bold text-xl tracking-tight">
               Fidel Juan Resuello
             </span>
           </motion.div>
@@ -339,7 +347,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
-              className="px-5 py-2 bg-brand-primary text-bg-dark rounded-full text-sm font-bold hover:bg-emerald-400 transition-all transform hover:scale-105 active:scale-95"
+              className="px-6 py-2.5 bg-brand-primary text-bg-dark rounded-lg text-sm font-bold hover:bg-emerald-400 transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
             >
               Hire Me
             </motion.a>
@@ -348,7 +356,11 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <header className="pt-48 pb-32 px-6 overflow-hidden">
+      <header className="pt-48 pb-32 px-6 overflow-hidden relative">
+        {/* Subtle server rack hint */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(16,185,129,0.2)_50%,transparent_100%)] bg-[length:200%_100%] animate-[pulse_8s_infinite]" />
+        </div>
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -364,7 +376,7 @@ export default function App() {
               <Zap size={14} className="animate-pulse" />
               AVAILABLE FOR NEW PROJECTS
             </motion.div>
-            <h1 className="text-6xl md:text-9xl font-bold text-white leading-tight mb-8">
+            <h1 className="text-6xl md:text-8xl font-bold text-white leading-[1.1] mb-8 tracking-tight">
               Scaling <span className="text-brand-primary">Efficiency</span> Through AI.
             </h1>
             <p className="text-xl text-neutral-400 max-w-2xl mx-auto leading-relaxed mb-12">
@@ -442,13 +454,16 @@ export default function App() {
                 <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-10 transition-opacity">
                    <ArrowUpRight size={40} className="text-brand-primary" />
                 </div>
-                <div className="w-12 h-12 bg-neutral-800 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-bg-dark transition-colors">
+                <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-bg-dark transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                   {service.icon}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">{service.title}</h3>
-                <p className="text-neutral-400 leading-relaxed">
+                <p className="text-neutral-400 leading-relaxed mb-6">
                   {service.desc}
                 </p>
+                <div className="flex items-center gap-2 text-brand-primary text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                  View Case Study <ChevronRight size={14} />
+                </div>
               </motion.div>
             ))}
           </div>
@@ -527,35 +542,39 @@ export default function App() {
                 <div className="aspect-video bg-neutral-800 overflow-hidden relative">
                   <motion.img 
                     whileHover={{ scale: 1.1 }}
-                    src={`https://picsum.photos/seed/${project.platform}/800/450`} 
+                    src={(project as any).bgImage} 
                     alt={project.title} 
                     className="w-full h-full object-cover opacity-50 transition-transform duration-700"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg-dark to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/40 to-transparent opacity-100" />
                   <div className="absolute bottom-6 left-6 pr-6 flex items-center gap-4">
                     {project.logoUrl && (
-                      <div className="w-12 h-12 bg-white rounded-lg p-2 flex items-center justify-center border border-white/10 shadow-lg group-hover:scale-110 transition-transform">
+                      <div className="w-14 h-14 bg-white/5 backdrop-blur-sm rounded-xl p-3 flex items-center justify-center border border-white/10 shadow-2xl group-hover:scale-110 group-hover:bg-white/10 transition-all duration-500">
                         <img 
                           src={project.logoUrl} 
                           alt={`${project.platform} logo`} 
                           className="w-full h-full object-contain"
                           referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
                         />
                       </div>
                     )}
-                    <h3 className={`text-5xl font-bold transition-colors leading-tight ${project.color}`}>
+                    <h3 className={`text-5xl font-bold transition-all duration-500 leading-tight tracking-tighter group-hover:translate-x-2 ${project.color}`}>
                       {project.title}
                     </h3>
                   </div>
                 </div>
-                <div className="p-8">
+                <div className="p-8 flex items-center justify-between">
+                  <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
                   <motion.div 
-                    whileHover={project.isComingSoon ? {} : { x: 5 }}
-                    className={`flex items-center gap-4 text-sm font-bold transition-colors ${project.isComingSoon ? 'text-neutral-600 cursor-not-allowed' : 'text-white group-hover:text-brand-primary'}`}
+                    whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
+                    className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
                   >
-                    {project.isComingSoon ? "Coming Soon" : "View Case Study"} 
-                    {!project.isComingSoon && <ChevronRight size={16} />}
+                    {(project as any).cta} 
+                    {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
                   </motion.div>
                 </div>
               </motion.div>
@@ -620,7 +639,7 @@ export default function App() {
                 {[
                   { icon: <Mail />, label: "Email", value: RESUME_DATA.email, href: `mailto:${RESUME_DATA.email}` },
                   { icon: <Phone />, label: "Phone", value: RESUME_DATA.phone, href: `tel:${RESUME_DATA.phone}` },
-                  { icon: <Linkedin />, label: "LinkedIn", value: "fidel-juan-resuello", href: RESUME_DATA.linkedin }
+                  { icon: <Linkedin />, label: "LinkedIn", value: "fidel-resuello", href: RESUME_DATA.linkedin }
                 ].map((item, i) => (
                   <motion.div 
                     key={i}
@@ -689,8 +708,8 @@ export default function App() {
           </div>
           
           <div className="flex items-center gap-6">
-            <motion.a whileHover={{ y: -3 }} href="#" className="text-neutral-400 hover:text-white transition-colors"><Linkedin size={20} /></motion.a>
-            <motion.a whileHover={{ y: -3 }} href="#" className="text-neutral-400 hover:text-white transition-colors"><Mail size={20} /></motion.a>
+            <motion.a whileHover={{ y: -3 }} href={RESUME_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors"><Linkedin size={20} /></motion.a>
+            <motion.a whileHover={{ y: -3 }} href={`mailto:${RESUME_DATA.email}`} className="text-neutral-400 hover:text-white transition-colors"><Mail size={20} /></motion.a>
           </div>
         </div>
       </footer>
