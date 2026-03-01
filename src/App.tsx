@@ -10,6 +10,8 @@ import {
   Linkedin, 
   ExternalLink, 
   ChevronRight, 
+  ChevronDown,
+  ChevronUp,
   CheckCircle2, 
   MessageSquare, 
   Briefcase, 
@@ -157,6 +159,76 @@ const RESUME_DATA = {
 };
 
 // --- Components ---
+
+const ExperienceItem = ({ exp, idx }: { exp: any; idx: number; key?: React.Key }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, x: -30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6 }}
+      className="relative pl-8 border-l border-border-dark group"
+    >
+      <motion.div 
+        whileInView={{ scale: [1, 1.5, 1] }}
+        className="absolute left-[-5px] top-0 w-[9px] h-[9px] bg-brand-primary rounded-full" 
+      />
+      <div className="flex flex-wrap justify-between items-start mb-4 gap-2">
+        <div>
+          <h3 className="text-2xl font-bold text-white group-hover:text-brand-primary transition-colors">{exp.role}</h3>
+          <div className="text-brand-primary font-medium">
+            {exp.company} {exp.client && <span className="text-neutral-500">| Client: {exp.client}</span>}
+          </div>
+        </div>
+        <div className="flex flex-col items-end gap-2">
+          <div className="px-3 py-1 bg-neutral-800 rounded-full text-xs font-mono text-neutral-400">
+            {exp.period}
+          </div>
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center gap-1 text-xs font-bold text-brand-primary hover:text-white transition-colors uppercase tracking-wider"
+          >
+            {isExpanded ? (
+              <>Hide Details <ChevronUp size={14} /></>
+            ) : (
+              <>View Details <ChevronDown size={14} /></>
+            )}
+          </button>
+        </div>
+      </div>
+      <p className="text-neutral-500 text-sm mb-6 flex items-center gap-2">
+        <MapPin size={14} /> {exp.location}
+      </p>
+      
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.ul 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="space-y-3 overflow-hidden"
+          >
+            {exp.highlights.map((h: string, i: number) => (
+              <motion.li 
+                key={i} 
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="flex items-start gap-3 text-neutral-400"
+              >
+                <CheckCircle2 size={16} className="text-brand-primary mt-1 shrink-0" />
+                <span>{h}</span>
+              </motion.li>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
 
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="mb-12">
@@ -477,48 +549,7 @@ export default function App() {
           
           <div className="space-y-12">
             {RESUME_DATA.experience.map((exp, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6 }}
-                className="relative pl-8 border-l border-border-dark group"
-              >
-                <motion.div 
-                  whileInView={{ scale: [1, 1.5, 1] }}
-                  className="absolute left-[-5px] top-0 w-[9px] h-[9px] bg-brand-primary rounded-full" 
-                />
-                <div className="flex flex-wrap justify-between items-start mb-4 gap-2">
-                  <div>
-                    <h3 className="text-2xl font-bold text-white group-hover:text-brand-primary transition-colors">{exp.role}</h3>
-                    <div className="text-brand-primary font-medium">
-                      {exp.company} {exp.client && <span className="text-neutral-500">| Client: {exp.client}</span>}
-                    </div>
-                  </div>
-                  <div className="px-3 py-1 bg-neutral-800 rounded-full text-xs font-mono text-neutral-400">
-                    {exp.period}
-                  </div>
-                </div>
-                <p className="text-neutral-500 text-sm mb-6 flex items-center gap-2">
-                  <MapPin size={14} /> {exp.location}
-                </p>
-                <ul className="space-y-3">
-                  {exp.highlights.map((h, i) => (
-                    <motion.li 
-                      key={i} 
-                      initial={{ opacity: 0, x: 10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-start gap-3 text-neutral-400"
-                    >
-                      <CheckCircle2 size={16} className="text-brand-primary mt-1 shrink-0" />
-                      <span>{h}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
+              <ExperienceItem key={idx} exp={exp} idx={idx} />
             ))}
           </div>
         </div>
