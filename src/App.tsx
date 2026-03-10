@@ -118,7 +118,7 @@ const RESUME_DATA = {
       tags: ["Zapier", "Asana", "CRM", "Automation"],
       color: "text-orange-500",
       logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
-      bgImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800&h=450", // 3D network nodes
+      bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800&h=450", // App directory / Catalog feel
       cta: "View Case Study >"
     },
     {
@@ -128,8 +128,9 @@ const RESUME_DATA = {
       tags: ["Make.com", "Xero", "Asana", "Google Drive"],
       color: "text-violet-500",
       logoUrl: "https://cdn.simpleicons.org/make/6D28D9",
-      bgImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800&h=450", // Circuit board macro
-      cta: "View Case Study >"
+      bgImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800&h=450", // Integration network
+      cta: "View Case Study >",
+      caseStudyId: "make-case-study"
     },
     {
       platform: "Go High Level",
@@ -139,8 +140,9 @@ const RESUME_DATA = {
       color: "text-white",
       isComingSoon: true,
       logoUrl: "https://cdn.simpleicons.org/salesforce/FFFFFF", // Stylized 'S' as requested
-      bgImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800&h=450", // Navy blue/deep grey tech pattern
-      cta: "View Case Study >"
+      bgImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800&h=450", // Marketing dashboard
+      cta: "View Case Study >",
+      caseStudyId: "ghl-case-study"
     },
     {
       platform: "n8n",
@@ -150,8 +152,9 @@ const RESUME_DATA = {
       color: "text-red-500",
       isComingSoon: true,
       logoUrl: "https://cdn.simpleicons.org/n8n/EA4B71",
-      bgImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800&h=450", // Server racks
-      cta: "Coming Soon"
+      bgImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&h=450", // Workflow code
+      cta: "Coming Soon",
+      caseStudyId: "n8n-case-study"
     }
   ],
   references: [
@@ -573,6 +576,7 @@ export default function App() {
             {RESUME_DATA.projects.map((project, idx) => (
               <motion.div 
                 key={idx}
+                id={project.platform.toLowerCase().replace(/\s+/g, '-') + '-card'}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -587,6 +591,38 @@ export default function App() {
                     className="w-full h-full object-cover opacity-50 transition-transform duration-700"
                     referrerPolicy="no-referrer"
                   />
+                  
+                  {/* Catalog Overlay */}
+                  {(project as any).catalog && (
+                    <a href={`#${(project as any).caseStudyId}`} className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none group-hover:pointer-events-auto">
+                      <div className="absolute inset-0 bg-bg-dark/95 backdrop-blur-md p-6 flex flex-col justify-center">
+                        <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${project.color}`}>Project Catalog</div>
+                        <div className="grid grid-cols-3 gap-3">
+                          {(project as any).catalog.map((item: any, i: number) => (
+                            <motion.div 
+                              key={i}
+                              initial={{ opacity: 0, y: 10 }}
+                              whileHover={{ y: -5, scale: 1.05 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: i * 0.1 }}
+                              className="relative aspect-square rounded-lg overflow-hidden border border-white/10 group/item"
+                            >
+                              <img 
+                                src={item.image} 
+                                alt={item.title} 
+                                className="w-full h-full object-cover grayscale group-hover/item:grayscale-0 transition-all duration-500"
+                                referrerPolicy="no-referrer"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end p-2">
+                                <span className="text-[10px] font-bold text-white leading-tight">{item.title}</span>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    </a>
+                  )}
+
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/40 to-transparent opacity-100" />
                   <div className="absolute bottom-6 left-6 pr-6 flex items-center gap-4">
                     {project.logoUrl && (
@@ -609,17 +645,78 @@ export default function App() {
                 </div>
                 <div className="p-8 flex items-center justify-between bg-white/5 backdrop-blur-md border-t border-white/10">
                   <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
-                  <motion.div 
-                    whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
-                    className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
-                  >
-                    {(project as any).cta} 
-                    {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
-                  </motion.div>
+                  <a href={`#${(project as any).caseStudyId}`}>
+                    <motion.div 
+                      whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
+                      className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
+                    >
+                      {(project as any).cta} 
+                      {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
+                    </motion.div>
+                  </a>
                 </div>
               </motion.div>
             ))}
           </div>
+        </div>
+
+        {/* Case Study Deep Dives */}
+        <div className="max-w-7xl mx-auto mt-32 space-y-32">
+          {RESUME_DATA.projects.filter(p => (p as any).catalog).map((project, idx) => (
+            <div key={idx} id={(project as any).caseStudyId} className="scroll-mt-24">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${project.color}`}>Case Study Detail</div>
+                  <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tighter">
+                    {project.platform} <span className={project.color}>Automation</span>
+                  </h2>
+                  <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-3 mb-10">
+                    {project.tags.map((tag, i) => (
+                      <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-neutral-300">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex gap-4">
+                    <button className="px-8 py-4 bg-brand-primary text-bg-dark font-bold rounded-xl hover:scale-105 transition-transform">
+                      View Live Workflow
+                    </button>
+                    <a href="#projects" className="px-8 py-4 border border-white/10 text-white font-bold rounded-xl hover:bg-white/5 transition-all">
+                      Back to Portfolio
+                    </a>
+                  </div>
+                </motion.div>
+                
+                <motion.div 
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="grid grid-cols-2 gap-4"
+                >
+                  {(project as any).catalog?.map((item: any, i: number) => (
+                    <div key={i} className={`relative rounded-2xl overflow-hidden border border-white/10 ${i === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 to-transparent flex items-end p-6">
+                        <div className="text-white font-bold text-lg">{item.title}</div>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
