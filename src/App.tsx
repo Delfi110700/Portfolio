@@ -538,19 +538,13 @@ export default function App() {
                 whileHover={{ y: -10 }}
                 className="glass-card p-8 glow-on-hover transition-all group relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-10 transition-opacity">
-                   <ArrowUpRight size={40} className="text-brand-primary" />
-                </div>
                 <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-bg-dark transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                   {service.icon}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">{service.title}</h3>
-                <p className="text-neutral-400 leading-relaxed mb-6">
+                <p className="text-neutral-400 leading-relaxed">
                   {service.desc}
                 </p>
-                <div className="flex items-center gap-2 text-brand-primary text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                  View Case Study <ChevronRight size={14} />
-                </div>
               </motion.div>
             ))}
           </div>
