@@ -677,37 +677,65 @@ export default function App() {
               
               <div className="space-y-6">
                 {[
-                  { icon: <Mail />, label: "Email", value: RESUME_DATA.email, href: `mailto:${RESUME_DATA.email}` },
-                  { icon: <Phone />, label: "Phone", value: RESUME_DATA.phone, href: `tel:${RESUME_DATA.phone}` },
-                  { icon: <Linkedin />, label: "LinkedIn", value: "fidel-resuello", href: RESUME_DATA.linkedin },
+                  { icon: <Mail />, label: "Email", value: RESUME_DATA.email, href: `mailto:${RESUME_DATA.email}`, color: "#EA4335" },
+                  { icon: <Phone />, label: "Phone", value: RESUME_DATA.phone, href: `tel:${RESUME_DATA.phone}`, color: "#10B981" },
+                  { icon: <Linkedin />, label: "LinkedIn", value: "fidel-resuello", href: RESUME_DATA.linkedin, color: "#0077B5" },
                   { 
-                    icon: <img src="https://cdn.simpleicons.org/upwork/6FDA44" className="w-6 h-6" alt="Upwork" />, 
+                    icon: <img 
+                      src="https://cdn.simpleicons.org/upwork/6FDA44" 
+                      className="w-6 h-6 group-hover:brightness-0 transition-all" 
+                      alt="Upwork" 
+                      referrerPolicy="no-referrer" 
+                    />, 
                     label: "Upwork", 
                     value: "View Profile", 
-                    href: RESUME_DATA.upwork 
+                    href: RESUME_DATA.upwork,
+                    color: "#6FDA44"
                   },
                   { 
-                    icon: <img src="https://cdn.simpleicons.org/onlinejobs.ph/00AEEF" className="w-6 h-6" alt="OnlineJobs" onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn.simpleicons.org/google/00AEEF' }} />, 
+                    icon: <img 
+                      src="https://www.onlinejobs.ph/favicon.ico" 
+                      className="w-6 h-6 group-hover:brightness-0 transition-all" 
+                      style={{ filter: 'invert(48%) sepia(79%) saturate(2476%) hue-rotate(164deg) brightness(101%) contrast(101%)' }}
+                      alt="OnlineJobs" 
+                      referrerPolicy="no-referrer" 
+                      onError={(e) => { 
+                        (e.target as HTMLImageElement).src = 'https://cdn.simpleicons.org/google/00AEEF';
+                      }} 
+                    />, 
                     label: "OnlineJobs.ph", 
                     value: "View Profile", 
-                    href: RESUME_DATA.onlinejobs 
+                    href: RESUME_DATA.onlinejobs,
+                    color: "#00AEEF"
                   }
                 ].map((item, i) => (
-                  <motion.div 
+                  <motion.a 
                     key={i}
+                    href={item.href}
+                    target={item.href.startsWith('http') ? "_blank" : undefined}
+                    rel={item.href.startsWith('http') ? "noopener noreferrer" : undefined}
                     whileHover={{ x: 10 }}
-                    className="flex items-center gap-4 group"
+                    className="flex items-center gap-4 group cursor-pointer"
                   >
-                    <div className="w-12 h-12 bg-neutral-800 rounded-xl flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-bg-dark transition-colors">
+                    <div 
+                      className="w-12 h-12 bg-neutral-800 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-[var(--item-color)] group-hover:text-bg-dark"
+                      style={{ 
+                        color: item.color,
+                        '--item-color': item.color 
+                      } as any}
+                    >
                       {item.icon}
                     </div>
                     <div>
                       <div className="text-xs text-neutral-500 uppercase font-mono">{item.label}</div>
-                      <a href={item.href} className="text-white font-medium hover:text-brand-primary transition-colors">
+                      <div 
+                        className="text-white font-medium transition-colors group-hover:text-[var(--item-color)]"
+                        style={{ '--item-color': item.color } as any}
+                      >
                         {item.value}
-                      </a>
+                      </div>
                     </div>
-                  </motion.div>
+                  </motion.a>
                 ))}
               </div>
             </div>
