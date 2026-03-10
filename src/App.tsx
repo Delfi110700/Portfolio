@@ -29,6 +29,8 @@ const RESUME_DATA = {
   phone: "09930068354",
   email: "fideljuanresuello110700@gmail.com",
   linkedin: "https://www.linkedin.com/in/fidel-resuello/",
+  upwork: "https://www.upwork.com/freelancers/~01e3665f0635f1b24a",
+  onlinejobs: "https://v2.onlinejobs.ph/jobseekers/info/2070126",
   summary: "I’m an AI Automation & CRM Specialist who builds workflows that cut manual tasks by up to 70% and get leads to respond in under 5 minutes. My systems boost conversions, improve pipeline visibility, and eliminate revenue leaks, turning chaotic operations into smooth, profitable processes.",
   skills: [
     "CRM Setup & Customization",
@@ -93,6 +95,19 @@ const RESUME_DATA = {
         "Installing, updating, and configuring software applications.",
         "Creating documentation for common issues and fixes (knowledge base)."
       ]
+    },
+    {
+      company: "E P Villoria Accounting Services",
+      role: "Technical Support (Intern)",
+      location: "Caloocan City, Philippines",
+      period: "March 2022 - May 2022",
+      highlights: [
+        "Maintain computers, printers, and peripherals for smooth operations.",
+        "Troubleshoot hardware, software, and network issues to reduce repeats.",
+        "Installed and updated accounting and office software to ensure security.",
+        "Supported users on-site while meeting response time expectations.",
+        "Educate employees on proper use of applications and IT best practices, reducing errors."
+      ]
     }
   ],
   projects: [
@@ -121,10 +136,10 @@ const RESUME_DATA = {
       title: "Go High Level",
       description: "Advanced CRM & Marketing Automation workflows.",
       tags: ["GHL", "CRM", "Marketing"],
-      color: "text-blue-400",
+      color: "text-white",
       isComingSoon: true,
-      logoUrl: "https://cdn.simpleicons.org/gohighlevel/2563EB",
-      bgImage: "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800&h=450", // SaaS Dashboard
+      logoUrl: "https://cdn.simpleicons.org/salesforce/FFFFFF", // Stylized 'S' as requested
+      bgImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800&h=450", // Navy blue/deep grey tech pattern
       cta: "View Case Study >"
     },
     {
@@ -598,7 +613,7 @@ export default function App() {
                     </h3>
                   </div>
                 </div>
-                <div className="p-8 flex items-center justify-between">
+                <div className="p-8 flex items-center justify-between bg-white/5 backdrop-blur-md border-t border-white/10">
                   <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
                   <motion.div 
                     whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
@@ -670,7 +685,19 @@ export default function App() {
                 {[
                   { icon: <Mail />, label: "Email", value: RESUME_DATA.email, href: `mailto:${RESUME_DATA.email}` },
                   { icon: <Phone />, label: "Phone", value: RESUME_DATA.phone, href: `tel:${RESUME_DATA.phone}` },
-                  { icon: <Linkedin />, label: "LinkedIn", value: "fidel-resuello", href: RESUME_DATA.linkedin }
+                  { icon: <Linkedin />, label: "LinkedIn", value: "fidel-resuello", href: RESUME_DATA.linkedin },
+                  { 
+                    icon: <img src="https://cdn.simpleicons.org/upwork/6FDA44" className="w-6 h-6" alt="Upwork" />, 
+                    label: "Upwork", 
+                    value: "View Profile", 
+                    href: RESUME_DATA.upwork 
+                  },
+                  { 
+                    icon: <img src="https://cdn.simpleicons.org/onlinejobs.ph/00AEEF" className="w-6 h-6" alt="OnlineJobs" onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn.simpleicons.org/google/00AEEF' }} />, 
+                    label: "OnlineJobs.ph", 
+                    value: "View Profile", 
+                    href: RESUME_DATA.onlinejobs 
+                  }
                 ].map((item, i) => (
                   <motion.div 
                     key={i}
