@@ -139,7 +139,7 @@ const RESUME_DATA = {
       tags: ["GHL", "CRM", "Marketing"],
       color: "text-white",
       isComingSoon: true,
-      logoUrl: "https://cdn.simpleicons.org/salesforce/FFFFFF", // Stylized 'S' as requested
+      logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", // Official GHL Logo
       bgImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800&h=450", // Marketing dashboard
       cta: "View Case Study >",
       caseStudyId: "ghl-case-study"
