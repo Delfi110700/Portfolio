@@ -121,12 +121,20 @@ const RESUME_DATA = {
       tags: ["Zapier", "Asana", "Gmail", "Automation"],
       color: "text-orange-500",
       logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
-      bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=800", // High-res workflow peek
+      bgImage: "Automated Leads Action - v3.png",
       cta: "View Case Study >",
       caseStudyId: "zapier-case-study",
+      catalog: [
+        { image: "Automated Leads Action - v3.png", title: "Lead Management Workflow" },
+        { image: "Social Media AI Content - v1.png", title: "AI Content Repurposing" },
+        { image: "List of tasks to be update - v2.png", title: "Task List Sync" },
+        { image: "Updating Task Lists - v4.png", title: "Automated Task Updates" },
+        { image: "Quote follow-up automation - draft.png", title: "Quote Follow-up" },
+        { image: "Lead Change to Quoted - v2.png", title: "Lead Conversion Logic" }
+      ],
       technicalSummary: "Automated Lead Management & Task Distribution",
       toolsUsed: ["Zapier", "Asana", "Gmail"],
-      workflowImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1600&h=900" // Large workflow screenshot
+      workflowImage: "Automated Leads Action - v3.png"
     },
     {
       platform: "Make",
@@ -653,18 +661,30 @@ export default function App() {
                 </div>
                 <div className="p-8 flex items-center justify-between bg-white/5 backdrop-blur-md border-t border-white/10">
                   <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
-                  <button 
-                    onClick={() => setSelectedProject(project)}
-                    className="cursor-pointer"
-                  >
-                    <motion.div 
-                      whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
-                      className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
+                  {project.caseStudyId ? (
+                    <a href={`#${project.caseStudyId}`} className="cursor-pointer">
+                      <motion.div 
+                        whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
+                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
+                      >
+                        {(project as any).cta} 
+                        {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
+                      </motion.div>
+                    </a>
+                  ) : (
+                    <button 
+                      onClick={() => setSelectedProject(project)}
+                      className="cursor-pointer"
                     >
-                      {(project as any).cta} 
-                      {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
-                    </motion.div>
-                  </button>
+                      <motion.div 
+                        whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
+                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
+                      >
+                        {(project as any).cta} 
+                        {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
+                      </motion.div>
+                    </button>
+                  )}
                 </div>
               </motion.div>
             ))}
