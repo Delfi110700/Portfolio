@@ -17,7 +17,10 @@ import {
   Briefcase, 
   Code2,
   Terminal,
-  ArrowUpRight
+  ArrowUpRight,
+  X,
+  Maximize2,
+  Layout
 } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 
@@ -114,12 +117,16 @@ const RESUME_DATA = {
     {
       platform: "Zapier",
       title: "Zapier",
-      description: "Content Repurposing, Asana CRM Automation, Lead Enrichment",
-      tags: ["Zapier", "Asana", "CRM", "Automation"],
+      description: "Automated Lead Management & Task Distribution",
+      tags: ["Zapier", "Asana", "Gmail", "Automation"],
       color: "text-orange-500",
       logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
-      bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800&h=450", // App directory / Catalog feel
-      cta: "View Case Study >"
+      bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=800", // High-res workflow peek
+      cta: "View Case Study >",
+      caseStudyId: "zapier-case-study",
+      technicalSummary: "Automated Lead Management & Task Distribution",
+      toolsUsed: ["Zapier", "Asana", "Gmail"],
+      workflowImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1600&h=900" // Large workflow screenshot
     },
     {
       platform: "Make",
@@ -385,6 +392,7 @@ const CustomCursor = () => {
 };
 
 export default function App() {
+  const [selectedProject, setSelectedProject] = useState<any>(null);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -645,7 +653,10 @@ export default function App() {
                 </div>
                 <div className="p-8 flex items-center justify-between bg-white/5 backdrop-blur-md border-t border-white/10">
                   <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
-                  <a href={`#${(project as any).caseStudyId}`}>
+                  <button 
+                    onClick={() => setSelectedProject(project)}
+                    className="cursor-pointer"
+                  >
                     <motion.div 
                       whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
                       className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
@@ -653,12 +664,112 @@ export default function App() {
                       {(project as any).cta} 
                       {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
                     </motion.div>
-                  </a>
+                  </button>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
+
+        {/* Case Study Modal (Lightbox) */}
+        <AnimatePresence>
+          {selectedProject && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-bg-dark/95 backdrop-blur-xl"
+              onClick={() => setSelectedProject(null)}
+            >
+              <motion.div 
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+                className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-neutral-900 rounded-3xl border border-white/10 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Close Button */}
+                <button 
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-6 right-6 z-50 p-2 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-colors"
+                >
+                  <X size={24} className="text-white" />
+                </button>
+
+                <div className="grid lg:grid-cols-2">
+                  {/* Left Side: Image/Workflow */}
+                  <div className="p-8 lg:p-12 bg-neutral-800/50 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-white/10">
+                    <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${selectedProject.color}`}>Technical Workflow</div>
+                    <div className="relative group rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                      <img 
+                        src={selectedProject.workflowImage || selectedProject.bgImage} 
+                        alt="Workflow Logic" 
+                        className="w-full h-auto object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                      <div className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Maximize2 size={20} className="text-white" />
+                      </div>
+                    </div>
+                    <p className="mt-6 text-sm text-neutral-400 italic text-center">
+                      Visual representation of the multi-step automation logic.
+                    </p>
+                  </div>
+
+                  {/* Right Side: Details */}
+                  <div className="p-8 lg:p-12 flex flex-col justify-center">
+                    <div className="flex items-center gap-4 mb-8">
+                      {selectedProject.logoUrl && (
+                        <div className="w-16 h-16 bg-white/5 rounded-2xl p-3 border border-white/10">
+                          <img src={selectedProject.logoUrl} alt="Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                        </div>
+                      )}
+                      <div>
+                        <h2 className={`text-4xl font-bold tracking-tighter ${selectedProject.color}`}>
+                          {selectedProject.title}
+                        </h2>
+                        <p className="text-neutral-400 font-medium">Case Study</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-8">
+                      <div>
+                        <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                          <Layout size={20} className={selectedProject.color} />
+                          Technical Summary
+                        </h3>
+                        <p className="text-neutral-300 leading-relaxed text-lg">
+                          {selectedProject.technicalSummary || selectedProject.description}
+                        </p>
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                          <Cpu size={20} className={selectedProject.color} />
+                          Tools & Integration
+                        </h3>
+                        <div className="flex flex-wrap gap-3">
+                          {(selectedProject.toolsUsed || selectedProject.tags).map((tool: string, i: number) => (
+                            <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-neutral-200">
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-8 border-t border-white/10">
+                        <button className={`w-full py-4 rounded-2xl font-bold text-bg-dark transition-all hover:scale-[1.02] active:scale-[0.98] bg-brand-primary`}>
+                          View Live Workflow
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Case Study Deep Dives */}
         <div className="max-w-7xl mx-auto mt-32 space-y-32">
