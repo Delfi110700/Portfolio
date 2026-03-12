@@ -20,7 +20,9 @@ import {
   ArrowUpRight,
   X,
   Maximize2,
-  Layout
+  Layout,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 
@@ -152,7 +154,7 @@ const RESUME_DATA = {
       title: "Go High Level",
       description: "Advanced CRM & Marketing Automation workflows.",
       tags: ["GHL", "CRM", "Marketing"],
-      color: "text-white",
+      color: "text-brand-primary",
       isComingSoon: true,
       logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", // Official GHL Logo
       bgImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800&h=450", // Marketing dashboard
@@ -210,18 +212,18 @@ const ExperienceItem = ({ exp, idx }: { exp: any; idx: number; key?: React.Key }
       />
       <div className="flex flex-wrap justify-between items-start mb-4 gap-2">
         <div>
-          <h3 className="text-2xl font-bold text-white group-hover:text-brand-primary transition-colors">{exp.role}</h3>
+          <h3 className="text-2xl font-bold group-hover:text-brand-primary transition-colors">{exp.role}</h3>
           <div className="text-brand-primary font-medium">
-            {exp.company} {exp.client && <span className="text-neutral-500">| Client: {exp.client}</span>}
+            {exp.company} {exp.client && <span className="text-text-muted">| Client: {exp.client}</span>}
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <div className="px-3 py-1 bg-neutral-800 rounded-full text-xs font-mono text-neutral-400">
+          <div className="px-3 py-1 bg-card-dark rounded-full text-xs font-mono text-text-muted">
             {exp.period}
           </div>
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-1 text-xs font-bold text-brand-primary hover:text-white transition-colors uppercase tracking-wider"
+            className="flex items-center gap-1 text-xs font-bold text-brand-primary hover:text-heading transition-colors uppercase tracking-wider"
           >
             {isExpanded ? (
               <>Hide Details <ChevronUp size={14} /></>
@@ -250,7 +252,7 @@ const ExperienceItem = ({ exp, idx }: { exp: any; idx: number; key?: React.Key }
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-start gap-3 text-neutral-400"
+                className="flex items-start gap-3 text-text-muted"
               >
                 <CheckCircle2 size={16} className="text-brand-primary mt-1 shrink-0" />
                 <span>{h}</span>
@@ -278,7 +280,7 @@ const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="text-4xl md:text-6xl font-bold text-white tracking-tight"
+      className="text-4xl md:text-6xl font-bold tracking-tight"
     >
       {title}
     </motion.h2>
@@ -401,6 +403,27 @@ const CustomCursor = () => {
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      return saved ? saved === 'dark' : true;
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (isDarkMode) {
+      root.classList.remove('light');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.add('light');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -419,7 +442,7 @@ export default function App() {
       />
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-bg-dark/80 backdrop-blur-md border-b border-border-dark">
+      <nav className="fixed top-0 w-full z-50 bg-bg-dark/80 backdrop-blur-md border-b border-border-dark transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
@@ -427,9 +450,9 @@ export default function App() {
             className="flex items-center gap-2"
           >
             <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center">
-              <span className="text-bg-dark font-bold text-xl">F</span>
+              <span className="text-black font-bold text-xl">F</span>
             </div>
-            <span className="text-white font-bold text-xl tracking-tight">
+            <span className="font-bold text-xl tracking-tight">
               Fidel Juan Resuello
             </span>
           </motion.div>
@@ -442,18 +465,31 @@ export default function App() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="text-sm font-medium text-neutral-400 hover:text-brand-primary transition-colors relative group"
+                className="text-sm font-medium text-text-muted hover:text-brand-primary transition-colors relative group"
               >
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-primary transition-all group-hover:w-full" />
               </motion.a>
             ))}
+
+            <motion.button
+              onClick={toggleTheme}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="p-2 rounded-xl bg-card-dark border border-border-dark text-text-muted hover:text-brand-primary transition-colors"
+              aria-label="Toggle Theme"
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </motion.button>
+            
             <motion.a 
               href="#contact"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
-              className="px-6 py-2.5 bg-brand-primary text-bg-dark rounded-lg text-sm font-bold hover:bg-emerald-400 transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+              className="px-6 py-2.5 bg-brand-primary text-black rounded-lg text-sm font-bold hover:bg-emerald-400 transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
             >
               Hire Me
             </motion.a>
@@ -482,10 +518,10 @@ export default function App() {
               <Zap size={14} className="animate-pulse" />
               AVAILABLE FOR NEW PROJECTS
             </motion.div>
-            <h1 className="text-6xl md:text-8xl font-bold text-white leading-[1.1] mb-8 tracking-tight">
+            <h1 className="text-6xl md:text-8xl font-bold leading-[1.1] mb-8 tracking-tight">
               Scaling <span className="text-brand-primary">Efficiency</span> Through AI.
             </h1>
-            <p className="text-xl text-neutral-400 max-w-2xl mx-auto leading-relaxed mb-12">
+            <p className="text-xl text-text-muted max-w-2xl mx-auto leading-relaxed mb-12">
               {RESUME_DATA.summary}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -493,7 +529,7 @@ export default function App() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="#projects" 
-                className="px-8 py-4 bg-white text-bg-dark rounded-xl font-bold flex items-center gap-2 hover:bg-neutral-200 transition-all"
+                className="px-8 py-4 bg-brand-primary text-black rounded-xl font-bold flex items-center gap-2 hover:bg-emerald-400 transition-all"
               >
                 View Projects <ArrowUpRight size={20} />
               </motion.a>
@@ -560,8 +596,8 @@ export default function App() {
                 <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-bg-dark transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                   {service.icon}
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">{service.title}</h3>
-                <p className="text-neutral-400 leading-relaxed">
+                <h3 className="text-xl font-bold mb-4">{service.title}</h3>
+                <p className="text-text-muted leading-relaxed">
                   {service.desc}
                 </p>
               </motion.div>
@@ -599,7 +635,7 @@ export default function App() {
                 transition={{ duration: 0.5 }}
                 className="glass-card group cursor-pointer relative overflow-hidden"
               >
-                <div className="aspect-video bg-neutral-800 overflow-hidden relative">
+                <div className="aspect-video bg-card-dark overflow-hidden relative">
                   <motion.img 
                     whileHover={{ scale: 1.1 }}
                     src={(project as any).bgImage} 
@@ -621,7 +657,7 @@ export default function App() {
                               whileHover={{ y: -5, scale: 1.05 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: i * 0.1 }}
-                              className="relative aspect-square rounded-lg overflow-hidden border border-white/10 group/item"
+                              className="relative aspect-square rounded-lg overflow-hidden border border-border-dark group/item"
                             >
                               <img 
                                 src={item.image} 
@@ -630,7 +666,7 @@ export default function App() {
                                 referrerPolicy="no-referrer"
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end p-2">
-                                <span className="text-[10px] font-bold text-white leading-tight">{item.title}</span>
+                                <span className="text-[10px] font-bold leading-tight">{item.title}</span>
                               </div>
                             </motion.div>
                           ))}
@@ -642,7 +678,7 @@ export default function App() {
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/40 to-transparent opacity-100" />
                   <div className="absolute bottom-6 left-6 pr-6 flex items-center gap-4">
                     {project.logoUrl && (
-                      <div className="w-14 h-14 bg-white/5 backdrop-blur-sm rounded-xl p-3 flex items-center justify-center border border-white/10 shadow-2xl group-hover:scale-110 group-hover:bg-white/10 transition-all duration-500">
+                      <div className="w-14 h-14 bg-card-dark backdrop-blur-sm rounded-xl p-3 flex items-center justify-center border border-border-dark shadow-2xl group-hover:scale-110 group-hover:bg-card-dark/80 transition-all duration-500">
                         <img 
                           src={project.logoUrl} 
                           alt={`${project.platform} logo`} 
@@ -659,13 +695,13 @@ export default function App() {
                     </h3>
                   </div>
                 </div>
-                <div className="p-8 flex items-center justify-between bg-white/5 backdrop-blur-md border-t border-white/10">
+                <div className="p-8 flex items-center justify-between bg-card-dark backdrop-blur-md border-t border-border-dark">
                   <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
                   {project.caseStudyId ? (
                     <a href={`#${project.caseStudyId}`} className="cursor-pointer">
                       <motion.div 
                         whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
-                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
+                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-text-muted cursor-not-allowed' : ''}`}
                       >
                         {(project as any).cta} 
                         {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
@@ -678,7 +714,7 @@ export default function App() {
                     >
                       <motion.div 
                         whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
-                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-neutral-600 cursor-not-allowed' : 'text-white'}`}
+                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-text-muted cursor-not-allowed' : ''}`}
                       >
                         {(project as any).cta} 
                         {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
@@ -705,22 +741,22 @@ export default function App() {
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
-                className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-neutral-900 rounded-3xl border border-white/10 shadow-2xl"
+                className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-bg-dark rounded-3xl border border-border-dark shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Close Button */}
                 <button 
                   onClick={() => setSelectedProject(null)}
-                  className="absolute top-6 right-6 z-50 p-2 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-colors"
+                  className="absolute top-6 right-6 z-50 p-2 bg-card-dark hover:bg-card-dark/80 rounded-full border border-border-dark transition-colors"
                 >
-                  <X size={24} className="text-white" />
+                  <X size={24} />
                 </button>
 
                 <div className="grid lg:grid-cols-2">
                   {/* Left Side: Image/Workflow */}
-                  <div className="p-8 lg:p-12 bg-neutral-800/50 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-white/10">
+                  <div className="p-8 lg:p-12 bg-card-dark/50 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-border-dark">
                     <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${selectedProject.color}`}>Technical Workflow</div>
-                    <div className="relative group rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                    <div className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl">
                       <img 
                         src={selectedProject.workflowImage || selectedProject.bgImage} 
                         alt="Workflow Logic" 
@@ -728,11 +764,11 @@ export default function App() {
                         referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                      <div className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-md rounded-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Maximize2 size={20} className="text-white" />
+                      <div className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-md rounded-lg border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Maximize2 size={20} />
                       </div>
                     </div>
-                    <p className="mt-6 text-sm text-neutral-400 italic text-center">
+                    <p className="mt-6 text-sm text-text-muted italic text-center">
                       Visual representation of the multi-step automation logic.
                     </p>
                   </div>
@@ -741,7 +777,7 @@ export default function App() {
                   <div className="p-8 lg:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-4 mb-8">
                       {selectedProject.logoUrl && (
-                        <div className="w-16 h-16 bg-white/5 rounded-2xl p-3 border border-white/10">
+                        <div className="w-16 h-16 bg-card-dark rounded-2xl p-3 border border-border-dark">
                           <img src={selectedProject.logoUrl} alt="Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                         </div>
                       )}
@@ -749,36 +785,36 @@ export default function App() {
                         <h2 className={`text-4xl font-bold tracking-tighter ${selectedProject.color}`}>
                           {selectedProject.title}
                         </h2>
-                        <p className="text-neutral-400 font-medium">Case Study</p>
+                        <p className="text-text-muted font-medium">Case Study</p>
                       </div>
                     </div>
 
                     <div className="space-y-8">
                       <div>
-                        <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
                           <Layout size={20} className={selectedProject.color} />
                           Technical Summary
                         </h3>
-                        <p className="text-neutral-300 leading-relaxed text-lg">
+                        <p className="text-text-muted leading-relaxed text-lg">
                           {selectedProject.technicalSummary || selectedProject.description}
                         </p>
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                           <Cpu size={20} className={selectedProject.color} />
                           Tools & Integration
                         </h3>
                         <div className="flex flex-wrap gap-3">
                           {(selectedProject.toolsUsed || selectedProject.tags).map((tool: string, i: number) => (
-                            <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-neutral-200">
+                            <span key={i} className="px-4 py-2 bg-card-dark border border-border-dark rounded-xl text-sm font-bold">
                               {tool}
                             </span>
                           ))}
                         </div>
                       </div>
 
-                      <div className="pt-8 border-t border-white/10">
+                      <div className="pt-8 border-t border-border-dark">
                         <button className={`w-full py-4 rounded-2xl font-bold text-bg-dark transition-all hover:scale-[1.02] active:scale-[0.98] bg-brand-primary`}>
                           View Live Workflow
                         </button>
@@ -802,24 +838,24 @@ export default function App() {
                   viewport={{ once: true }}
                 >
                   <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${project.color}`}>Case Study Detail</div>
-                  <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tighter">
+                  <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight tracking-tighter">
                     {project.platform} <span className={project.color}>Automation</span>
                   </h2>
-                  <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
+                  <p className="text-xl text-text-muted mb-8 leading-relaxed">
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-3 mb-10">
                     {project.tags.map((tag, i) => (
-                      <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-neutral-300">
+                      <span key={i} className="px-4 py-2 bg-card-dark border border-border-dark rounded-full text-sm">
                         {tag}
                       </span>
                     ))}
                   </div>
                   <div className="flex gap-4">
-                    <button className="px-8 py-4 bg-brand-primary text-bg-dark font-bold rounded-xl hover:scale-105 transition-transform">
+                    <button className="px-8 py-4 bg-brand-primary text-black font-bold rounded-xl hover:scale-105 transition-transform">
                       View Live Workflow
                     </button>
-                    <a href="#projects" className="px-8 py-4 border border-white/10 text-white font-bold rounded-xl hover:bg-white/5 transition-all">
+                    <a href="#projects" className="px-8 py-4 border border-border-dark font-bold rounded-xl hover:bg-card-dark transition-all">
                       Back to Portfolio
                     </a>
                   </div>
@@ -832,7 +868,7 @@ export default function App() {
                   className="grid grid-cols-2 gap-4"
                 >
                   {(project as any).catalog?.map((item: any, i: number) => (
-                    <div key={i} className={`relative rounded-2xl overflow-hidden border border-white/10 ${i === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
+                    <div key={i} className={`relative rounded-2xl overflow-hidden border border-border-dark ${i === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
                       <img 
                         src={item.image} 
                         alt={item.title} 
@@ -840,7 +876,7 @@ export default function App() {
                         referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 to-transparent flex items-end p-6">
-                        <div className="text-white font-bold text-lg">{item.title}</div>
+                        <div className="font-bold text-lg">{item.title}</div>
                       </div>
                     </div>
                   ))}
@@ -867,15 +903,15 @@ export default function App() {
                 whileHover={{ scale: 1.02 }}
                 className="glass-card p-8 text-center group"
               >
-                <div className="w-16 h-16 bg-neutral-800 rounded-full mx-auto mb-6 flex items-center justify-center overflow-hidden border border-border-dark group-hover:border-brand-primary transition-colors">
+                <div className="w-16 h-16 bg-card-dark rounded-full mx-auto mb-6 flex items-center justify-center overflow-hidden border border-border-dark group-hover:border-brand-primary transition-colors">
                   <img src={`https://picsum.photos/seed/${ref.name}/100/100`} alt={ref.name} referrerPolicy="no-referrer" />
                 </div>
                 <MessageSquare className="text-brand-primary/20 mx-auto mb-4 group-hover:text-brand-primary/40 transition-colors" size={32} />
-                <p className="text-neutral-300 italic mb-6">
+                <p className="text-text-muted italic mb-6">
                   "Fidel is a highly skilled professional in the field of {ref.role.toLowerCase()}. His dedication to workflow architecture and automation is exceptional."
                 </p>
-                <div className="font-bold text-white">{ref.name}</div>
-                <div className="text-xs text-neutral-500 uppercase tracking-widest mt-1">{ref.role}</div>
+                <div className="font-bold">{ref.name}</div>
+                <div className="text-xs text-text-muted uppercase tracking-widest mt-1">{ref.role}</div>
               </motion.div>
             ))}
           </div>
@@ -899,7 +935,7 @@ export default function App() {
           >
             <div>
               <SectionHeading title="Let's Build Something Efficient" subtitle="Contact" />
-              <p className="text-neutral-400 mb-10 text-lg">
+              <p className="text-text-muted mb-10 text-lg">
                 Ready to automate your business processes or optimize your CRM? Reach out and let's discuss how I can help you scale.
               </p>
               
@@ -946,7 +982,7 @@ export default function App() {
                     className="flex items-center gap-4 group cursor-pointer"
                   >
                     <div 
-                      className="w-12 h-12 bg-neutral-800 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-[var(--item-color)] group-hover:text-bg-dark"
+                      className="w-12 h-12 bg-card-dark rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-[var(--item-color)] group-hover:text-bg-dark"
                       style={{ 
                         color: item.color,
                         '--item-color': item.color 
@@ -957,7 +993,7 @@ export default function App() {
                     <div>
                       <div className="text-xs text-neutral-500 uppercase font-mono">{item.label}</div>
                       <div 
-                        className="text-white font-medium transition-colors group-hover:text-[var(--item-color)]"
+                        className="font-medium transition-colors group-hover:text-[var(--item-color)]"
                         style={{ '--item-color': item.color } as any}
                       >
                         {item.value}
@@ -971,26 +1007,26 @@ export default function App() {
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-mono text-neutral-500 uppercase">Name</label>
-                  <input type="text" className="w-full bg-neutral-800 border border-border-dark rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors" placeholder="John Doe" />
+                  <label className="text-xs font-mono text-text-muted uppercase">Name</label>
+                  <input type="text" className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors" placeholder="John Doe" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-mono text-neutral-500 uppercase">Email</label>
-                  <input type="email" className="w-full bg-neutral-800 border border-border-dark rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors" placeholder="john@example.com" />
+                  <label className="text-xs font-mono text-text-muted uppercase">Email</label>
+                  <input type="email" className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors" placeholder="john@example.com" />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-mono text-neutral-500 uppercase">Subject</label>
-                <input type="text" className="w-full bg-neutral-800 border border-border-dark rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors" placeholder="Automation Project" />
+                <label className="text-xs font-mono text-text-muted uppercase">Subject</label>
+                <input type="text" className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors" placeholder="Automation Project" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-mono text-neutral-500 uppercase">Message</label>
-                <textarea rows={5} className="w-full bg-neutral-800 border border-border-dark rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition-colors resize-none" placeholder="Tell me about your project..."></textarea>
+                <label className="text-xs font-mono text-text-muted uppercase">Message</label>
+                <textarea rows={5} className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors resize-none" placeholder="Tell me about your project..."></textarea>
               </div>
               <motion.button 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full py-4 bg-brand-primary text-bg-dark font-bold rounded-xl hover:bg-emerald-400 transition-all shadow-lg shadow-brand-primary/10"
+                className="w-full py-4 bg-brand-primary text-black font-bold rounded-xl hover:bg-emerald-400 transition-all shadow-lg shadow-brand-primary/10"
               >
                 Send Message
               </motion.button>
@@ -1004,9 +1040,9 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-brand-primary rounded flex items-center justify-center">
-              <span className="text-bg-dark font-bold text-sm">F</span>
+              <span className="text-black font-bold text-sm">F</span>
             </div>
-            <span className="text-white font-bold tracking-tight">
+            <span className="font-bold tracking-tight">
               Fidel Juan Resuello
             </span>
           </div>
@@ -1016,8 +1052,8 @@ export default function App() {
           </div>
           
           <div className="flex items-center gap-6">
-            <motion.a whileHover={{ y: -3 }} href={RESUME_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors"><Linkedin size={20} /></motion.a>
-            <motion.a whileHover={{ y: -3 }} href={`mailto:${RESUME_DATA.email}`} className="text-neutral-400 hover:text-white transition-colors"><Mail size={20} /></motion.a>
+            <motion.a whileHover={{ y: -3 }} href={RESUME_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-brand-primary transition-colors"><Linkedin size={20} /></motion.a>
+            <motion.a whileHover={{ y: -3 }} href={`mailto:${RESUME_DATA.email}`} className="text-text-muted hover:text-brand-primary transition-colors"><Mail size={20} /></motion.a>
           </div>
         </div>
       </footer>
