@@ -126,14 +126,6 @@ const RESUME_DATA = {
       bgImage: "Automated Leads Action - v3.png",
       cta: "View Case Study >",
       caseStudyId: "zapier-case-study",
-      catalog: [
-        { image: "Automated Leads Action - v3.png", title: "Lead Management Workflow" },
-        { image: "Social Media AI Content - v1.png", title: "AI Content Repurposing" },
-        { image: "List of tasks to be update - v2.png", title: "Task List Sync" },
-        { image: "Updating Task Lists - v4.png", title: "Automated Task Updates" },
-        { image: "Quote follow-up automation - draft.png", title: "Quote Follow-up" },
-        { image: "Lead Change to Quoted - v2.png", title: "Lead Conversion Logic" }
-      ],
       technicalSummary: "Automated Lead Management & Task Distribution",
       toolsUsed: ["Zapier", "Asana", "Gmail"],
       workflowImage: "Automated Leads Action - v3.png"
