@@ -5,7 +5,6 @@ import {
   Database, 
   Zap, 
   Mail, 
-  Phone, 
   MapPin, 
   Linkedin, 
   ExternalLink, 
@@ -31,7 +30,7 @@ const RESUME_DATA = {
   name: "Fidel Juan Resuello",
   role: "AI Automation & CRM Specialist",
   location: "Caloocan City, Philippines",
-  phone: "09930068354",
+  phone: "09512976577",
   email: "fideljuanresuello110700@gmail.com",
   linkedin: "https://www.linkedin.com/in/fidel-resuello/",
   upwork: "https://www.upwork.com/freelancers/~01e3665f0635f1b24a",
@@ -934,7 +933,18 @@ export default function App() {
               <div className="space-y-6">
                 {[
                   { icon: <Mail />, label: "Email", value: RESUME_DATA.email, href: `mailto:${RESUME_DATA.email}`, color: "#EA4335" },
-                  { icon: <Phone />, label: "Phone", value: RESUME_DATA.phone, href: `tel:${RESUME_DATA.phone}`, color: "#10B981" },
+                  { 
+                    icon: <img 
+                      src="https://cdn.simpleicons.org/whatsapp/25D366" 
+                      className="w-6 h-6 group-hover:brightness-0 transition-all" 
+                      alt="WhatsApp" 
+                      referrerPolicy="no-referrer" 
+                    />, 
+                    label: "WhatsApp", 
+                    value: RESUME_DATA.phone, 
+                    href: `https://wa.me/63${RESUME_DATA.phone.substring(1)}`, 
+                    color: "#25D366" 
+                  },
                   { icon: <Linkedin />, label: "LinkedIn", value: "fidel-resuello", href: RESUME_DATA.linkedin, color: "#0077B5" },
                   { 
                     icon: <img 
