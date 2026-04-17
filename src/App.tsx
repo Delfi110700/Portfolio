@@ -8,7 +8,8 @@ import {
   MapPin, 
   Linkedin, 
   ExternalLink, 
-  ChevronRight, 
+  ChevronRight,
+  ChevronLeft,
   ChevronDown,
   ChevronUp,
   CheckCircle2, 
@@ -158,11 +159,16 @@ const RESUME_DATA = {
       description: "Self-hosted workflow automation for complex data pipelines.",
       tags: ["n8n", "Self-hosted", "Automation"],
       color: "text-red-500",
-      isComingSoon: true,
       logoUrl: "https://cdn.simpleicons.org/n8n/EA4B71",
       bgImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&h=450", // Workflow code
-      cta: "Coming Soon",
-      caseStudyId: "n8n-case-study"
+      cta: "View Case Study >",
+      caseStudyId: "n8n-case-study",
+      catalog: [
+        { image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200", title: "Weather to Discord Automation" },
+        { image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200", title: "Scalable Logic Design" }
+      ],
+      technicalSummary: "Built localized weather notification bots and automated discord management tools using multi-node n8n workflows.",
+      toolsUsed: ["n8n", "Discord API", "OpenWeather", "Webhooks"]
     }
   ],
   references: [
@@ -394,6 +400,7 @@ const CustomCursor = () => {
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -700,7 +707,10 @@ export default function App() {
                     </a>
                   ) : (
                     <button 
-                      onClick={() => setSelectedProject(project)}
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setCurrentImageIndex(0);
+                      }}
                       className="cursor-pointer"
                     >
                       <motion.div 
@@ -746,21 +756,81 @@ export default function App() {
                 <div className="grid lg:grid-cols-2">
                   {/* Left Side: Image/Workflow */}
                   <div className="p-8 lg:p-12 bg-card-dark/50 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-border-dark">
-                    <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${selectedProject.color}`}>Technical Workflow</div>
-                    <div className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl">
-                      <img 
-                        src={selectedProject.workflowImage || selectedProject.bgImage} 
-                        alt="Workflow Logic" 
-                        className="w-full h-auto object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                      <div className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-md rounded-lg border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Maximize2 size={20} />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className={`text-xs font-mono uppercase tracking-widest ${selectedProject.color}`}>
+                        {selectedProject.catalog && selectedProject.catalog.length > 0 
+                          ? `Visual Catalog (${currentImageIndex + 1}/${selectedProject.catalog.length})` 
+                          : 'Technical Workflow'}
                       </div>
+                      {selectedProject.catalog && selectedProject.catalog.length > 1 && (
+                        <div className="flex gap-2">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
+                            }}
+                            className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                          >
+                            <ChevronLeft size={16} />
+                          </button>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
+                            }}
+                            className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                          >
+                            <ChevronRight size={16} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl aspect-video bg-black/40">
+                      <AnimatePresence mode="wait">
+                        <motion.img 
+                          key={currentImageIndex}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          src={selectedProject.catalog && selectedProject.catalog.length > 0 
+                            ? selectedProject.catalog[currentImageIndex].image 
+                            : (selectedProject.workflowImage || selectedProject.bgImage)} 
+                          alt="Workflow Logic" 
+                          className="w-full h-full object-contain"
+                          referrerPolicy="no-referrer"
+                        />
+                      </AnimatePresence>
+                      
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                      
+                      {selectedProject.catalog && selectedProject.catalog.length > 1 && (
+                        <>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
+                            }}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <ChevronLeft size={20} />
+                          </button>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
+                            }}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <ChevronRight size={20} />
+                          </button>
+                        </>
+                      )}
                     </div>
                     <p className="mt-6 text-sm text-text-muted italic text-center">
-                      Visual representation of the multi-step automation logic.
+                      {selectedProject.catalog && selectedProject.catalog.length > 0 
+                        ? selectedProject.catalog[currentImageIndex].title 
+                        : 'Visual representation of the multi-step automation logic.'}
                     </p>
                   </div>
 
