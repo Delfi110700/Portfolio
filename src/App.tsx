@@ -1099,7 +1099,7 @@ export default function App() {
               </motion.a>
               
               <p className="text-xs text-text-muted font-mono relative z-10">
-                Available: Mon - Fri · 30-min Strategy Session
+                Available: Mon - Sun · 30-min Strategy Session
               </p>
             </div>
           </motion.div>
