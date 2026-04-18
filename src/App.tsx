@@ -4,7 +4,6 @@ import {
   Workflow, 
   Database, 
   Zap, 
-  Mail, 
   MapPin, 
   Linkedin, 
   ExternalLink, 
@@ -119,16 +118,19 @@ const RESUME_DATA = {
     {
       platform: "Zapier",
       title: "Zapier",
-      description: "Automated Lead Management & Task Distribution",
-      tags: ["Zapier", "Asana", "Gmail", "Automation"],
+      description: "",
+      tags: [],
       color: "text-orange-500",
       logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
-      bgImage: "Automated Leads Action - v3.png",
+      bgImage: "",
       cta: "View Case Study >",
       caseStudyId: "zapier-case-study",
-      technicalSummary: "Automated Lead Management & Task Distribution",
-      toolsUsed: ["Zapier", "Asana", "Gmail"],
-      workflowImage: "Automated Leads Action - v3.png"
+      catalog: [
+        { image: "https://cdn.simpleicons.org/zapier/FF6600", title: "" }
+      ],
+      technicalSummary: "",
+      toolsUsed: [],
+      workflowImage: "https://cdn.simpleicons.org/zapier/FF6600"
     },
     {
       platform: "Make",
@@ -143,15 +145,22 @@ const RESUME_DATA = {
     },
     {
       platform: "Go High Level",
-      title: "Go High Level",
-      description: "Advanced CRM & Marketing Automation workflows.",
-      tags: ["GHL", "CRM", "Marketing"],
+      title: "GoHighLevel",
+      description: "",
+      tags: [],
       color: "text-brand-primary",
       isComingSoon: true,
-      logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", // Official GHL Logo
-      bgImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800&h=450", // Marketing dashboard
+      logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png",
+      bgImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", 
       cta: "View Case Study >",
-      caseStudyId: "ghl-case-study"
+      caseStudyId: "ghl-case-study",
+      catalog: [
+        { image: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", title: "GoHighLevel Ecosystem" }
+      ],
+      technicalSummary: "",
+      invertInLight: true,
+      toolsUsed: [],
+      workflowImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png"
     },
     {
       platform: "n8n",
@@ -160,13 +169,9 @@ const RESUME_DATA = {
       tags: ["n8n", "Self-hosted", "Automation"],
       color: "text-red-500",
       logoUrl: "https://cdn.simpleicons.org/n8n/EA4B71",
-      bgImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&h=450", // Workflow code
+      bgImage: "",
       cta: "View Case Study >",
       caseStudyId: "n8n-case-study",
-      catalog: [
-        { image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1200", title: "Weather to Discord Automation" },
-        { image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200", title: "Scalable Logic Design" }
-      ],
       technicalSummary: "Built localized weather notification bots and automated discord management tools using multi-node n8n workflows.",
       toolsUsed: ["n8n", "Discord API", "OpenWeather", "Webhooks"]
     }
@@ -179,7 +184,7 @@ const RESUME_DATA = {
     },
     {
       name: "RJ Villamor",
-      role: "AI Automation Consultant",
+      role: "n8n Ambassador",
       type: "Endorsement"
     },
     {
@@ -343,7 +348,7 @@ const CustomCursor = () => {
           x: mousePos.x - 20,
           y: mousePos.y - 20,
           scale: isClicking ? 1.5 : 1,
-          borderColor: isClicking ? "rgba(16, 185, 129, 0.8)" : "rgba(16, 185, 129, 0.3)",
+          borderColor: "var(--brand-primary)",
         }}
         transition={{ type: 'spring', damping: 25, stiffness: 300, mass: 0.5 }}
       />
@@ -360,39 +365,6 @@ const CustomCursor = () => {
       />
 
       <AnimatePresence>
-        {/* Ripples */}
-        {ripples.map(ripple => (
-          <motion.div
-            key={ripple.id}
-            initial={{ opacity: 0.8, scale: 0, borderWeight: "2px" }}
-            animate={{ opacity: 0, scale: 2.5 }}
-            exit={{ opacity: 0 }}
-            className="fixed top-0 left-0 w-12 h-12 border-2 border-brand-primary rounded-full pointer-events-none z-[9998]"
-            style={{ left: ripple.x - 24, top: ripple.y - 24 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          />
-        ))}
-
-        {/* Particles */}
-        {particles.map(particle => (
-          <motion.div
-            key={particle.id}
-            initial={{ 
-              opacity: 1, 
-              x: particle.x - 2, 
-              y: particle.y - 2,
-              scale: 1 
-            }}
-            animate={{ 
-              opacity: 0,
-              x: particle.x - 2 + Math.cos(particle.angle) * particle.distance,
-              y: particle.y - 2 + Math.sin(particle.angle) * particle.distance,
-              scale: 0
-            }}
-            className="fixed top-0 left-0 w-1 h-1 bg-brand-primary rounded-sm pointer-events-none z-[9998]"
-            transition={{ duration: 0.6, ease: "circOut" }}
-          />
-        ))}
       </AnimatePresence>
     </>
   );
@@ -487,7 +459,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
-              className="px-6 py-2.5 bg-brand-primary text-black rounded-lg text-sm font-bold hover:bg-emerald-400 transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+              className="px-6 py-2.5 bg-brand-primary text-white rounded-lg text-sm font-bold shadow-[0_0_20px_var(--shadow-brand)] hover:scale-105 transition-all active:scale-95"
             >
               Hire Me
             </motion.a>
@@ -499,7 +471,7 @@ export default function App() {
       <header className="pt-48 pb-32 px-6 overflow-hidden relative">
         {/* Subtle server rack hint */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(16,185,129,0.2)_50%,transparent_100%)] bg-[length:200%_100%] animate-[pulse_8s_infinite]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,var(--gradient-brand)_50%,transparent_100%)] bg-[length:200%_100%] animate-[pulse_8s_infinite]" />
         </div>
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
@@ -527,7 +499,7 @@ export default function App() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="#projects" 
-                className="px-8 py-4 bg-brand-primary text-black rounded-xl font-bold flex items-center gap-2 hover:bg-emerald-400 transition-all"
+                className="px-8 py-4 bg-brand-primary text-white rounded-xl font-bold flex items-center gap-2 shadow-xl shadow-brand-primary/20 transition-all hover:scale-105"
               >
                 View Projects <ArrowUpRight size={20} />
               </motion.a>
@@ -620,7 +592,7 @@ export default function App() {
       {/* Projects Section */}
       <section id="projects" className="py-24 px-6 bg-card-dark/30">
         <div className="max-w-7xl mx-auto">
-          <SectionHeading title="Featured Projects" subtitle="Portfolio" />
+          <SectionHeading title="Scalable Projects" subtitle="Portfolio" />
           
           <div className="grid md:grid-cols-2 gap-8">
             {RESUME_DATA.projects.map((project, idx) => (
@@ -634,20 +606,30 @@ export default function App() {
                 className="glass-card group cursor-pointer relative overflow-hidden"
               >
                 <div className="aspect-video bg-card-dark overflow-hidden relative">
-                  <motion.img 
-                    whileHover={{ scale: 1.1 }}
-                    src={(project as any).bgImage} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover opacity-50 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
-                  />
+                  {(project as any).bgImage && (
+                    <motion.img 
+                      whileHover={{ scale: 1.1 }}
+                      src={(project as any).bgImage} 
+                      alt={project.title} 
+                      className={`w-full h-full transition-transform duration-700 ${
+                        ['Zapier', 'Go High Level'].includes(project.platform) ? 'object-contain p-12 opacity-15' : 'object-cover opacity-50'
+                      }`}
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
                   
                   {/* Catalog Overlay */}
                   {(project as any).catalog && (
                     <a href={`#${(project as any).caseStudyId}`} className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none group-hover:pointer-events-auto">
-                      <div className="absolute inset-0 bg-bg-dark/95 backdrop-blur-md p-6 flex flex-col justify-center">
-                        <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${project.color}`}>Project Catalog</div>
-                        <div className="grid grid-cols-3 gap-3">
+                      <div className="absolute inset-0 bg-bg-dark/95 backdrop-blur-md p-6 flex flex-col justify-center relative overflow-hidden">
+                        {/* Background Watermark for Catalog */}
+                        {['Zapier', 'Go High Level'].includes(project.platform) && (
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05]">
+                            <img src={project.logoUrl} alt="" className="w-1/2 h-1/2 object-contain" />
+                          </div>
+                        )}
+                        <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${project.color} relative z-10`}>Project Catalog</div>
+                        <div className="grid grid-cols-3 gap-3 relative z-10">
                           {(project as any).catalog.map((item: any, i: number) => (
                             <motion.div 
                               key={i}
@@ -680,7 +662,9 @@ export default function App() {
                         <img 
                           src={project.logoUrl} 
                           alt={`${project.platform} logo`} 
-                          className="w-full h-full object-contain"
+                          className={`w-full h-full object-contain transition-all duration-300 ${
+                            !isDarkMode && (project as any).invertInLight ? 'invert brightness-0' : ''
+                          }`}
                           referrerPolicy="no-referrer"
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
@@ -851,29 +835,33 @@ export default function App() {
                     </div>
 
                     <div className="space-y-8">
-                      <div>
-                        <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                          <Layout size={20} className={selectedProject.color} />
-                          Technical Summary
-                        </h3>
-                        <p className="text-text-muted leading-relaxed text-lg">
-                          {selectedProject.technicalSummary || selectedProject.description}
-                        </p>
-                      </div>
-
-                      <div>
-                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                          <Cpu size={20} className={selectedProject.color} />
-                          Tools & Integration
-                        </h3>
-                        <div className="flex flex-wrap gap-3">
-                          {(selectedProject.toolsUsed || selectedProject.tags).map((tool: string, i: number) => (
-                            <span key={i} className="px-4 py-2 bg-card-dark border border-border-dark rounded-xl text-sm font-bold">
-                              {tool}
-                            </span>
-                          ))}
+                      {(selectedProject.technicalSummary || selectedProject.description) && (
+                        <div>
+                          <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
+                            <Layout size={20} className={selectedProject.color} />
+                            Technical Summary
+                          </h3>
+                          <p className="text-text-muted leading-relaxed text-lg">
+                            {selectedProject.technicalSummary || selectedProject.description}
+                          </p>
                         </div>
-                      </div>
+                      )}
+
+                      {(selectedProject.toolsUsed?.length > 0 || selectedProject.tags?.length > 0) && (
+                        <div>
+                          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                            <Cpu size={20} className={selectedProject.color} />
+                            Tools & Integration
+                          </h3>
+                          <div className="flex flex-wrap gap-3">
+                            {(selectedProject.toolsUsed || selectedProject.tags).map((tool: string, i: number) => (
+                              <span key={i} className="px-4 py-2 bg-card-dark border border-border-dark rounded-xl text-sm font-bold">
+                                {tool}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
                       <div className="pt-8 border-t border-border-dark">
                         <button className={`w-full py-4 rounded-2xl font-bold text-bg-dark transition-all hover:scale-[1.02] active:scale-[0.98] bg-brand-primary`}>
@@ -890,7 +878,7 @@ export default function App() {
 
         {/* Case Study Deep Dives */}
         <div className="max-w-7xl mx-auto mt-32 space-y-32">
-          {RESUME_DATA.projects.filter(p => (p as any).catalog).map((project, idx) => (
+          {RESUME_DATA.projects.filter(p => (p as any).catalog && p.description).map((project, idx) => (
             <div key={idx} id={(project as any).caseStudyId} className="scroll-mt-24">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <motion.div
@@ -1002,7 +990,18 @@ export default function App() {
               
               <div className="space-y-6">
                 {[
-                  { icon: <Mail />, label: "Email", value: RESUME_DATA.email, href: `mailto:${RESUME_DATA.email}`, color: "#EA4335" },
+                  { 
+                    icon: <img 
+                      src="https://cdn.simpleicons.org/gmail/EA4335" 
+                      className="w-6 h-6 group-hover:brightness-0 transition-all" 
+                      alt="Gmail" 
+                      referrerPolicy="no-referrer" 
+                    />, 
+                    label: "Gmail", 
+                    value: RESUME_DATA.email, 
+                    href: `mailto:${RESUME_DATA.email}`, 
+                    color: "#EA4335" 
+                  },
                   { 
                     icon: <img 
                       src="https://cdn.simpleicons.org/whatsapp/25D366" 
@@ -1076,33 +1075,33 @@ export default function App() {
               </div>
             </div>
             
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-text-muted uppercase">Name</label>
-                  <input type="text" className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors" placeholder="John Doe" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-text-muted uppercase">Email</label>
-                  <input type="email" className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors" placeholder="john@example.com" />
-                </div>
+            <div className="flex flex-col items-center justify-center space-y-8 py-12 px-6 bg-card-dark border border-border-dark rounded-3xl relative overflow-hidden group">
+              <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-brand-primary mb-2 relative z-10">
+                <Zap size={40} className="animate-pulse" />
               </div>
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-text-muted uppercase">Subject</label>
-                <input type="text" className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors" placeholder="Automation Project" />
+              
+              <div className="text-center relative z-10">
+                <h3 className="text-3xl font-bold mb-4">Ready to Automate?</h3>
+                <p className="text-text-muted max-w-md mx-auto mb-8">
+                  Let's discuss how we can cut your manual work by 70% and streamline your operations with a custom AI & CRM strategy.
+                </p>
               </div>
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-text-muted uppercase">Message</label>
-                <textarea rows={5} className="w-full bg-card-dark border border-border-dark rounded-xl px-4 py-3 focus:outline-none focus:border-brand-primary transition-colors resize-none" placeholder="Tell me about your project..."></textarea>
-              </div>
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full py-4 bg-brand-primary text-black font-bold rounded-xl hover:bg-emerald-400 transition-all shadow-lg shadow-brand-primary/10"
+
+              <motion.a 
+                href="https://calendly.com/fideljuanresuello110700/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-12 py-5 bg-brand-primary text-white rounded-2xl font-bold text-lg shadow-2xl shadow-brand-primary/30 flex items-center gap-3 relative z-10"
               >
-                Send Message
-              </motion.button>
-            </form>
+                Book a Free Consultation <ChevronRight size={20} />
+              </motion.a>
+              
+              <p className="text-xs text-text-muted font-mono relative z-10">
+                Available: Mon - Fri · 30-min Strategy Session
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -1125,7 +1124,9 @@ export default function App() {
           
           <div className="flex items-center gap-6">
             <motion.a whileHover={{ y: -3 }} href={RESUME_DATA.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-brand-primary transition-colors"><Linkedin size={20} /></motion.a>
-            <motion.a whileHover={{ y: -3 }} href={`mailto:${RESUME_DATA.email}`} className="text-text-muted hover:text-brand-primary transition-colors"><Mail size={20} /></motion.a>
+            <motion.a whileHover={{ y: -3 }} href={`mailto:${RESUME_DATA.email}`} className="text-text-muted hover:text-brand-primary transition-colors">
+              <img src="https://cdn.simpleicons.org/gmail/EA4335" className="w-5 h-5 grayscale hover:grayscale-0 transition-all" alt="Gmail" referrerPolicy="no-referrer" />
+            </motion.a>
           </div>
         </div>
       </footer>
