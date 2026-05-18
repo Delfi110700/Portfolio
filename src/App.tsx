@@ -117,20 +117,22 @@ const RESUME_DATA = {
   projects: [
     {
       platform: "Zapier",
-      title: "Zapier",
-      description: "",
-      tags: [],
+      title: "Zapier Automation",
+      description: "Complex multi-step workflow logic with advanced paths and conditional branching.",
+      tags: ["Typeform", "Zapier", "ActiveCampaign", "Slack", "Gmail"],
       color: "text-orange-500",
       logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
-      bgImage: "",
+      bgImage: "https://images.unsplash.com/photo-1518433278993-2a7ca12cc8cc?auto=format&fit=crop&q=80&w=800&h=450",
       cta: "View Case Study >",
-      caseStudyId: "zapier-case-study",
+      technicalSummary: "Architected a high-volume lead routing system using Zapier Paths. This workflow handles incoming Typeform responses, formats dates, routes data based on department (Sales, Accounting, Support, Comms), and manages contact synchronization with ActiveCampaign and instant team notifications via Slack.",
+      toolsUsed: ["Zapier", "Typeform", "ActiveCampaign", "Slack", "Gmail"],
+      workflowImage: "https://storage.googleapis.com/test-media-human-beings/c5ecbfa3-0d31-419b-b461-12c8b0304381/input_file_0.png",
       catalog: [
-        { image: "https://cdn.simpleicons.org/zapier/FF6600", title: "" }
-      ],
-      technicalSummary: "",
-      toolsUsed: [],
-      workflowImage: "https://cdn.simpleicons.org/zapier/FF6600"
+        { 
+          image: "https://storage.googleapis.com/test-media-human-beings/c5ecbfa3-0d31-419b-b461-12c8b0304381/input_file_0.png", 
+          title: "Main Workflow Logic & Branching" 
+        }
+      ]
     },
     {
       platform: "Make",
@@ -140,24 +142,18 @@ const RESUME_DATA = {
       color: "text-violet-500",
       logoUrl: "https://cdn.simpleicons.org/make/6D28D9",
       bgImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800&h=450", // Integration network
-      cta: "View Case Study >",
-      caseStudyId: "make-case-study"
+      cta: "View Case Study >"
     },
     {
       platform: "Go High Level",
       title: "GoHighLevel",
-      description: "",
-      tags: [],
+      description: "Workflow & Marketing Automation Ecosystem for agencies.",
+      tags: ["GHL", "CRM", "SaaS"],
       color: "text-brand-primary",
       isComingSoon: true,
       logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png",
       bgImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", 
-      cta: "View Case Study >",
-      caseStudyId: "ghl-case-study",
-      catalog: [
-        { image: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", title: "GoHighLevel Ecosystem" }
-      ],
-      technicalSummary: "",
+      cta: "Coming Soon",
       invertInLight: true,
       toolsUsed: [],
       workflowImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png"
@@ -169,9 +165,8 @@ const RESUME_DATA = {
       tags: ["n8n", "Self-hosted", "Automation"],
       color: "text-red-500",
       logoUrl: "https://cdn.simpleicons.org/n8n/EA4B71",
-      bgImage: "",
+      bgImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800&h=450",
       cta: "View Case Study >",
-      caseStudyId: "n8n-case-study",
       technicalSummary: "Built localized weather notification bots and automated discord management tools using multi-node n8n workflows.",
       toolsUsed: ["n8n", "Discord API", "OpenWeather", "Webhooks"]
     }
@@ -618,43 +613,6 @@ export default function App() {
                     />
                   )}
                   
-                  {/* Catalog Overlay */}
-                  {(project as any).catalog && (
-                    <a href={`#${(project as any).caseStudyId}`} className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none group-hover:pointer-events-auto">
-                      <div className="absolute inset-0 bg-bg-dark/95 backdrop-blur-md p-6 flex flex-col justify-center relative overflow-hidden">
-                        {/* Background Watermark for Catalog */}
-                        {['Zapier', 'Go High Level'].includes(project.platform) && (
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05]">
-                            <img src={project.logoUrl} alt="" className="w-1/2 h-1/2 object-contain" />
-                          </div>
-                        )}
-                        <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${project.color} relative z-10`}>Project Catalog</div>
-                        <div className="grid grid-cols-3 gap-3 relative z-10">
-                          {(project as any).catalog.map((item: any, i: number) => (
-                            <motion.div 
-                              key={i}
-                              initial={{ opacity: 0, y: 10 }}
-                              whileHover={{ y: -5, scale: 1.05 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: i * 0.1 }}
-                              className="relative aspect-square rounded-lg overflow-hidden border border-border-dark group/item"
-                            >
-                              <img 
-                                src={item.image} 
-                                alt={item.title} 
-                                className="w-full h-full object-cover grayscale group-hover/item:grayscale-0 transition-all duration-500"
-                                referrerPolicy="no-referrer"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end p-2">
-                                <span className="text-[10px] font-bold leading-tight">{item.title}</span>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    </a>
-                  )}
-
                   <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/40 to-transparent opacity-100" />
                   <div className="absolute bottom-6 left-6 pr-6 flex items-center gap-4">
                     {project.logoUrl && (
@@ -679,33 +637,22 @@ export default function App() {
                 </div>
                 <div className="p-8 flex items-center justify-between bg-card-dark backdrop-blur-md border-t border-border-dark">
                   <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
-                  {project.caseStudyId ? (
-                    <a href={`#${project.caseStudyId}`} className="cursor-pointer">
-                      <motion.div 
-                        whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
-                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-text-muted cursor-not-allowed' : ''}`}
-                      >
-                        {(project as any).cta} 
-                        {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
-                      </motion.div>
-                    </a>
-                  ) : (
-                    <button 
-                      onClick={() => {
-                        setSelectedProject(project);
-                        setCurrentImageIndex(0);
-                      }}
-                      className="cursor-pointer"
+                  <button 
+                    onClick={() => {
+                      if (project.isComingSoon && project.cta === "Coming Soon") return;
+                      setSelectedProject(project);
+                      setCurrentImageIndex(0);
+                    }}
+                    className={`cursor-pointer ${project.isComingSoon && project.cta === "Coming Soon" ? 'cursor-not-allowed' : ''}`}
+                  >
+                    <motion.div 
+                      whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
+                      className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-text-muted' : ''}`}
                     >
-                      <motion.div 
-                        whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
-                        className={`flex items-center gap-2 text-sm font-bold transition-all duration-300 ${project.isComingSoon && project.cta === "Coming Soon" ? 'text-text-muted cursor-not-allowed' : ''}`}
-                      >
-                        {(project as any).cta} 
-                        {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
-                      </motion.div>
-                    </button>
-                  )}
+                      {(project as any).cta} 
+                      {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
+                    </motion.div>
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -875,65 +822,6 @@ export default function App() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Case Study Deep Dives */}
-        <div className="max-w-7xl mx-auto mt-32 space-y-32">
-          {RESUME_DATA.projects.filter(p => (p as any).catalog && p.description).map((project, idx) => (
-            <div key={idx} id={(project as any).caseStudyId} className="scroll-mt-24">
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <div className={`text-xs font-mono mb-4 uppercase tracking-widest ${project.color}`}>Case Study Detail</div>
-                  <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight tracking-tighter">
-                    {project.platform} <span className={project.color}>Automation</span>
-                  </h2>
-                  <p className="text-xl text-text-muted mb-8 leading-relaxed">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-3 mb-10">
-                    {project.tags.map((tag, i) => (
-                      <span key={i} className="px-4 py-2 bg-card-dark border border-border-dark rounded-full text-sm">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex gap-4">
-                    <button className="px-8 py-4 bg-brand-primary text-black font-bold rounded-xl hover:scale-105 transition-transform">
-                      View Live Workflow
-                    </button>
-                    <a href="#projects" className="px-8 py-4 border border-border-dark font-bold rounded-xl hover:bg-card-dark transition-all">
-                      Back to Portfolio
-                    </a>
-                  </div>
-                </motion.div>
-                
-                <motion.div 
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="grid grid-cols-2 gap-4"
-                >
-                  {(project as any).catalog?.map((item: any, i: number) => (
-                    <div key={i} className={`relative rounded-2xl overflow-hidden border border-border-dark ${i === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
-                      <img 
-                        src={item.image} 
-                        alt={item.title} 
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 to-transparent flex items-end p-6">
-                        <div className="font-bold text-lg">{item.title}</div>
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* Testimonials/References Section */}
@@ -1088,7 +976,7 @@ export default function App() {
               </div>
 
               <motion.a 
-                href="https://calendly.com/fideljuanresuello110700/30min"
+                href="https://calendly.com/fidelresuello413/30min"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05, y: -5 }}
