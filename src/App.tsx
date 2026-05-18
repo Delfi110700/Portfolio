@@ -126,10 +126,10 @@ const RESUME_DATA = {
       cta: "View Case Study >",
       technicalSummary: "Architected a high-volume lead routing system using Zapier Paths. This workflow handles incoming Typeform responses, formats dates, routes data based on department (Sales, Accounting, Support, Comms), and manages contact synchronization with ActiveCampaign and instant team notifications via Slack.",
       toolsUsed: ["Zapier", "Typeform", "ActiveCampaign", "Slack", "Gmail"],
-      workflowImage: "https://storage.googleapis.com/test-media-human-beings/c5ecbfa3-0d31-419b-b461-12c8b0304381/input_file_0.png",
+      workflowImage: "/src/assets/images/zapier_workflow_logic_1779091669955.png",
       catalog: [
         { 
-          image: "https://storage.googleapis.com/test-media-human-beings/c5ecbfa3-0d31-419b-b461-12c8b0304381/input_file_0.png", 
+          image: "/src/assets/images/zapier_workflow_logic_1779091669955.png", 
           title: "Main Workflow Logic & Branching" 
         }
       ]
@@ -367,6 +367,7 @@ const CustomCursor = () => {
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -717,7 +718,12 @@ export default function App() {
                       )}
                     </div>
 
-                    <div className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl aspect-video bg-black/40">
+                    <div 
+                      onClick={() => setEnlargedImage(selectedProject.catalog && selectedProject.catalog.length > 0 
+                        ? selectedProject.catalog[currentImageIndex].image 
+                        : (selectedProject.workflowImage || selectedProject.bgImage))}
+                      className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl aspect-video bg-black/40 cursor-zoom-in"
+                    >
                       <AnimatePresence mode="wait">
                         <motion.img 
                           key={currentImageIndex}
@@ -734,6 +740,13 @@ export default function App() {
                       </AnimatePresence>
                       
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                      
+                      {/* Zoom Overlay Hint */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <div className="bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/20">
+                          <Maximize2 size={24} />
+                        </div>
+                      </div>
                       
                       {selectedProject.catalog && selectedProject.catalog.length > 1 && (
                         <>
@@ -766,29 +779,29 @@ export default function App() {
                   </div>
 
                   {/* Right Side: Details */}
-                  <div className="p-8 lg:p-12 flex flex-col justify-center">
-                    <div className="flex items-center gap-4 mb-8">
+                  <div className="p-10 lg:p-16 flex flex-col justify-center">
+                    <div className="flex items-center gap-4 mb-10">
                       {selectedProject.logoUrl && (
-                        <div className="w-16 h-16 bg-card-dark rounded-2xl p-3 border border-border-dark">
+                        <div className="w-20 h-20 bg-card-dark rounded-2xl p-4 border border-border-dark shadow-xl">
                           <img src={selectedProject.logoUrl} alt="Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                         </div>
                       )}
                       <div>
-                        <h2 className={`text-4xl font-bold tracking-tighter ${selectedProject.color}`}>
+                        <h2 className={`text-5xl font-bold tracking-tighter ${selectedProject.color}`}>
                           {selectedProject.title}
                         </h2>
-                        <p className="text-text-muted font-medium">Case Study</p>
+                        <p className="text-text-muted font-medium text-lg">Case Study</p>
                       </div>
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="space-y-12">
                       {(selectedProject.technicalSummary || selectedProject.description) && (
                         <div>
-                          <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                            <Layout size={20} className={selectedProject.color} />
+                          <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
+                            <Layout size={24} className={selectedProject.color} />
                             Technical Summary
                           </h3>
-                          <p className="text-text-muted leading-relaxed text-lg">
+                          <p className="text-text-muted leading-relaxed text-xl">
                             {selectedProject.technicalSummary || selectedProject.description}
                           </p>
                         </div>
@@ -796,29 +809,53 @@ export default function App() {
 
                       {(selectedProject.toolsUsed?.length > 0 || selectedProject.tags?.length > 0) && (
                         <div>
-                          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                            <Cpu size={20} className={selectedProject.color} />
+                          <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                            <Cpu size={24} className={selectedProject.color} />
                             Tools & Integration
                           </h3>
-                          <div className="flex flex-wrap gap-3">
+                          <div className="flex flex-wrap gap-4">
                             {(selectedProject.toolsUsed || selectedProject.tags).map((tool: string, i: number) => (
-                              <span key={i} className="px-4 py-2 bg-card-dark border border-border-dark rounded-xl text-sm font-bold">
+                              <span key={i} className="px-5 py-2.5 bg-card-dark border border-border-dark rounded-2xl text-base font-bold shadow-sm">
                                 {tool}
                               </span>
                             ))}
                           </div>
                         </div>
                       )}
-
-                      <div className="pt-8 border-t border-border-dark">
-                        <button className={`w-full py-4 rounded-2xl font-bold text-bg-dark transition-all hover:scale-[1.02] active:scale-[0.98] bg-brand-primary`}>
-                          View Live Workflow
-                        </button>
-                      </div>
                     </div>
                   </div>
                 </div>
               </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+ 
+        {/* Fullscreen Lightbox */}
+        <AnimatePresence>
+          {enlargedImage && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/95 backdrop-blur-lg"
+              onClick={() => setEnlargedImage(null)}
+            >
+              <button 
+                className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white z-[120]"
+                onClick={() => setEnlargedImage(null)}
+              >
+                <X size={32} />
+              </button>
+              <motion.img 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                src={enlargedImage}
+                alt="Enlarged Workflow"
+                className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+                referrerPolicy="no-referrer"
+              />
             </motion.div>
           )}
         </AnimatePresence>
