@@ -152,7 +152,7 @@ const RESUME_DATA = {
       color: "text-brand-primary",
       isComingSoon: true,
       logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2023/07/cropped-favicon-new-192x192.png",
-      bgImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", 
+      bgImage: "/src/assets/images/ghl_bg_1779693692076.png", 
       cta: "Coming Soon",
       toolsUsed: [],
       workflowImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png"
@@ -607,9 +607,7 @@ export default function App() {
                       whileHover={{ scale: 1.1 }}
                       src={(project as any).bgImage} 
                       alt={project.title} 
-                      className={`w-full h-full transition-transform duration-700 ${
-                        ['Go High Level'].includes(project.platform) ? 'object-contain p-12 opacity-15' : 'object-cover opacity-50'
-                      }`}
+                      className="w-full h-full transition-transform duration-700 object-cover opacity-50"
                       referrerPolicy="no-referrer"
                     />
                   )}
