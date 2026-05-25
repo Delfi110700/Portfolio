@@ -613,12 +613,24 @@ export default function App() {
                       whileHover={{ scale: 1.1 }}
                       src={(project as any).bgImage} 
                       alt={project.title} 
-                      className="w-full h-full transition-all duration-700 object-cover opacity-95 group-hover:opacity-100 brightness-110 group-hover:brightness-125"
+                      className={`w-full h-full transition-all duration-700 object-cover ${
+                        isDarkMode 
+                          ? 'opacity-95 group-hover:opacity-100 brightness-110 group-hover:brightness-125 saturate-100' 
+                          : `${
+                              project.platform === 'Go High Level' 
+                                ? 'mix-blend-multiply opacity-85 group-hover:opacity-100 brightness-105 contrast-95 saturate-110' 
+                                : 'opacity-80 group-hover:opacity-95 contrast-110 brightness-105 saturate-105'
+                            }`
+                      }`}
                       referrerPolicy="no-referrer"
                     />
                   )}
                   
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/70 via-bg-dark/10 to-transparent group-hover:opacity-20 transition-opacity duration-700" />
+                  <div className={`absolute inset-0 bg-gradient-to-t transition-opacity duration-700 ${
+                    isDarkMode 
+                      ? 'from-bg-dark/70 via-bg-dark/10 to-transparent group-hover:opacity-20' 
+                      : 'from-bg-dark/85 via-bg-dark/25 to-transparent group-hover:opacity-40'
+                  }`} />
                   <div className="absolute bottom-6 left-6 pr-6 flex items-center gap-4">
                     {project.logoUrl && (
                       <div className="w-14 h-14 bg-card-dark backdrop-blur-sm rounded-xl p-3 flex items-center justify-center border border-border-dark shadow-2xl group-hover:scale-110 group-hover:bg-card-dark/80 transition-all duration-500">
