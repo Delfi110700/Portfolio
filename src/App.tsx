@@ -150,12 +150,13 @@ const RESUME_DATA = {
       description: "Workflow & Marketing Automation Ecosystem for agencies.",
       tags: ["GHL", "CRM", "SaaS"],
       color: "text-brand-primary",
-      isComingSoon: true,
+      isComingSoon: false,
       logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2023/07/cropped-favicon-new-192x192.png",
       bgImage: "/src/assets/images/ghl_bg_1779693692076.png", 
-      cta: "Coming Soon",
-      toolsUsed: [],
-      workflowImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png"
+      cta: "View Case Study >",
+      technicalSummary: "Configured comprehensive GoHighLevel CRM pipelines and automated trigger response systems. Implemented customized client onboarding funnels, scheduled booking calendars, and automated lead nurturing sequences across SMS and Email channels.",
+      toolsUsed: ["GoHighLevel", "Twilio", "Stripe", "Zapier", "Webhooks"],
+      workflowImage: "/src/assets/images/ghl_bg_1779693692076.png"
     },
     {
       platform: "n8n",
@@ -600,6 +601,11 @@ export default function App() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5 }}
                 className="glass-card group cursor-pointer relative overflow-hidden"
+                onClick={() => {
+                  if (project.isComingSoon && project.cta === "Coming Soon") return;
+                  setSelectedProject(project);
+                  setCurrentImageIndex(0);
+                }}
               >
                 <div className="aspect-video bg-card-dark overflow-hidden relative">
                   {(project as any).bgImage && (
@@ -607,12 +613,12 @@ export default function App() {
                       whileHover={{ scale: 1.1 }}
                       src={(project as any).bgImage} 
                       alt={project.title} 
-                      className="w-full h-full transition-transform duration-700 object-cover opacity-50"
+                      className="w-full h-full transition-all duration-700 object-cover opacity-85 group-hover:opacity-100"
                       referrerPolicy="no-referrer"
                     />
                   )}
                   
-                  <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/40 to-transparent opacity-100" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/90 via-bg-dark/25 to-transparent group-hover:opacity-40 transition-opacity duration-700" />
                   <div className="absolute bottom-6 left-6 pr-6 flex items-center gap-4">
                     {project.logoUrl && (
                       <div className="w-14 h-14 bg-card-dark backdrop-blur-sm rounded-xl p-3 flex items-center justify-center border border-border-dark shadow-2xl group-hover:scale-110 group-hover:bg-card-dark/80 transition-all duration-500">
@@ -636,13 +642,8 @@ export default function App() {
                 </div>
                 <div className="p-8 flex items-center justify-between bg-card-dark backdrop-blur-md border-t border-border-dark">
                   <span className={`text-xl font-bold ${project.color}`}>{project.platform}</span>
-                  <button 
-                    onClick={() => {
-                      if (project.isComingSoon && project.cta === "Coming Soon") return;
-                      setSelectedProject(project);
-                      setCurrentImageIndex(0);
-                    }}
-                    className={`cursor-pointer ${project.isComingSoon && project.cta === "Coming Soon" ? 'cursor-not-allowed' : ''}`}
+                  <div 
+                    className={`${project.isComingSoon && project.cta === "Coming Soon" ? 'cursor-not-allowed' : ''}`}
                   >
                     <motion.div 
                       whileHover={project.isComingSoon && project.cta === "Coming Soon" ? {} : { x: 8, color: "var(--color-brand-primary)" }}
@@ -651,7 +652,7 @@ export default function App() {
                       {(project as any).cta} 
                       {!(project.isComingSoon && project.cta === "Coming Soon") && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />}
                     </motion.div>
-                  </button>
+                  </div>
                 </div>
               </motion.div>
             ))}
