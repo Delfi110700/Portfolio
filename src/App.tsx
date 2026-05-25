@@ -117,7 +117,7 @@ const RESUME_DATA = {
   projects: [
     {
       platform: "Zapier",
-      title: "Zapier Automation",
+      title: "Zapier",
       description: "Complex multi-step workflow logic with advanced paths and conditional branching.",
       tags: ["Typeform", "Zapier", "ActiveCampaign", "Slack", "Gmail"],
       color: "text-orange-500",
