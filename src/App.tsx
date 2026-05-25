@@ -122,7 +122,7 @@ const RESUME_DATA = {
       tags: ["Typeform", "Zapier", "ActiveCampaign", "Slack", "Gmail"],
       color: "text-orange-500",
       logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
-      bgImage: "https://images.unsplash.com/photo-1518433278993-2a7ca12cc8cc?auto=format&fit=crop&q=80&w=800&h=450",
+      bgImage: "/src/assets/images/zapier_bg_1779679133369.png",
       cta: "View Case Study >",
       technicalSummary: "Architected a high-volume lead routing system using Zapier Paths. This workflow handles incoming Typeform responses, formats dates, routes data based on department (Sales, Accounting, Support, Comms), and manages contact synchronization with ActiveCampaign and instant team notifications via Slack.",
       toolsUsed: ["Zapier", "Typeform", "ActiveCampaign", "Slack", "Gmail"],
@@ -141,7 +141,7 @@ const RESUME_DATA = {
       tags: ["Make.com", "Xero", "Asana", "Google Drive"],
       color: "text-violet-500",
       logoUrl: "https://cdn.simpleicons.org/make/6D28D9",
-      bgImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800&h=450", // Integration network
+      bgImage: "/src/assets/images/make_bg_1779679599892.png", // Integration network
       cta: "View Case Study >"
     },
     {
@@ -151,10 +151,9 @@ const RESUME_DATA = {
       tags: ["GHL", "CRM", "SaaS"],
       color: "text-brand-primary",
       isComingSoon: true,
-      logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png",
+      logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2023/07/cropped-favicon-new-192x192.png",
       bgImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png", 
       cta: "Coming Soon",
-      invertInLight: true,
       toolsUsed: [],
       workflowImage: "https://www.gohighlevel.com/wp-content/uploads/2021/01/GHL-Logo-White.png"
     },
@@ -165,7 +164,7 @@ const RESUME_DATA = {
       tags: ["n8n", "Self-hosted", "Automation"],
       color: "text-red-500",
       logoUrl: "https://cdn.simpleicons.org/n8n/EA4B71",
-      bgImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800&h=450",
+      bgImage: "/src/assets/images/n8n_exact_bg_1779688051276.png",
       cta: "View Case Study >",
       technicalSummary: "Built localized weather notification bots and automated discord management tools using multi-node n8n workflows.",
       toolsUsed: ["n8n", "Discord API", "OpenWeather", "Webhooks"]
@@ -369,6 +368,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const hasVisuals = selectedProject && (selectedProject.workflowImage || (selectedProject.catalog && selectedProject.catalog.length > 0));
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -608,7 +608,7 @@ export default function App() {
                       src={(project as any).bgImage} 
                       alt={project.title} 
                       className={`w-full h-full transition-transform duration-700 ${
-                        ['Zapier', 'Go High Level'].includes(project.platform) ? 'object-contain p-12 opacity-15' : 'object-cover opacity-50'
+                        ['Go High Level'].includes(project.platform) ? 'object-contain p-12 opacity-15' : 'object-cover opacity-50'
                       }`}
                       referrerPolicy="no-referrer"
                     />
@@ -674,7 +674,7 @@ export default function App() {
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
-                className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-bg-dark rounded-3xl border border-border-dark shadow-2xl"
+                className={`relative w-full ${hasVisuals ? 'max-w-6xl' : 'max-w-3xl'} max-h-[90vh] overflow-y-auto bg-bg-dark rounded-3xl border border-border-dark shadow-2xl`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Close Button */}
@@ -685,101 +685,103 @@ export default function App() {
                   <X size={24} />
                 </button>
 
-                <div className="grid lg:grid-cols-2">
+                <div className={hasVisuals ? "grid lg:grid-cols-2" : "block"}>
                   {/* Left Side: Image/Workflow */}
-                  <div className="p-8 lg:p-12 bg-card-dark/50 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-border-dark">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`text-xs font-mono uppercase tracking-widest ${selectedProject.color}`}>
-                        {selectedProject.catalog && selectedProject.catalog.length > 0 
-                          ? `Visual Catalog (${currentImageIndex + 1}/${selectedProject.catalog.length})` 
-                          : 'Technical Workflow'}
-                      </div>
-                      {selectedProject.catalog && selectedProject.catalog.length > 1 && (
-                        <div className="flex gap-2">
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
-                            }}
-                            className="p-1 hover:bg-white/10 rounded-full transition-colors"
-                          >
-                            <ChevronLeft size={16} />
-                          </button>
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
-                            }}
-                            className="p-1 hover:bg-white/10 rounded-full transition-colors"
-                          >
-                            <ChevronRight size={16} />
-                          </button>
+                  {hasVisuals && (
+                    <div className="p-8 lg:p-12 bg-card-dark/50 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-border-dark">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className={`text-xs font-mono uppercase tracking-widest ${selectedProject.color}`}>
+                          {selectedProject.catalog && selectedProject.catalog.length > 0 
+                            ? `Visual Catalog (${currentImageIndex + 1}/${selectedProject.catalog.length})` 
+                            : 'Technical Workflow'}
                         </div>
-                      )}
-                    </div>
+                        {selectedProject.catalog && selectedProject.catalog.length > 1 && (
+                          <div className="flex gap-2">
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
+                              }}
+                              className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                            >
+                              <ChevronLeft size={16} />
+                            </button>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
+                              }}
+                              className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                            >
+                              <ChevronRight size={16} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
 
-                    <div 
-                      onClick={() => setEnlargedImage(selectedProject.catalog && selectedProject.catalog.length > 0 
-                        ? selectedProject.catalog[currentImageIndex].image 
-                        : (selectedProject.workflowImage || selectedProject.bgImage))}
-                      className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl aspect-video bg-black/40 cursor-zoom-in"
-                    >
-                      <AnimatePresence mode="wait">
-                        <motion.img 
-                          key={currentImageIndex}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          src={selectedProject.catalog && selectedProject.catalog.length > 0 
-                            ? selectedProject.catalog[currentImageIndex].image 
-                            : (selectedProject.workflowImage || selectedProject.bgImage)} 
-                          alt="Workflow Logic" 
-                          className="w-full h-full object-contain"
-                          referrerPolicy="no-referrer"
-                        />
-                      </AnimatePresence>
-                      
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                      
-                      {/* Zoom Overlay Hint */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                        <div className="bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/20">
-                          <Maximize2 size={24} />
+                      <div 
+                        onClick={() => setEnlargedImage(selectedProject.catalog && selectedProject.catalog.length > 0 
+                          ? selectedProject.catalog[currentImageIndex].image 
+                          : selectedProject.workflowImage)}
+                        className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl aspect-video bg-black/40 cursor-zoom-in"
+                      >
+                        <AnimatePresence mode="wait">
+                          <motion.img 
+                            key={currentImageIndex}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            src={selectedProject.catalog && selectedProject.catalog.length > 0 
+                              ? selectedProject.catalog[currentImageIndex].image 
+                              : selectedProject.workflowImage} 
+                            alt="Workflow Logic" 
+                            className="w-full h-full object-contain"
+                            referrerPolicy="no-referrer"
+                          />
+                        </AnimatePresence>
+                        
+                        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                        
+                        {/* Zoom Overlay Hint */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                          <div className="bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/20">
+                            <Maximize2 size={24} />
+                          </div>
                         </div>
+                        
+                        {selectedProject.catalog && selectedProject.catalog.length > 1 && (
+                          <>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
+                              }}
+                              className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <ChevronLeft size={20} />
+                            </button>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
+                              }}
+                              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <ChevronRight size={20} />
+                            </button>
+                          </>
+                        )}
                       </div>
-                      
-                      {selectedProject.catalog && selectedProject.catalog.length > 1 && (
-                        <>
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
-                            }}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <ChevronLeft size={20} />
-                          </button>
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
-                            }}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <ChevronRight size={20} />
-                          </button>
-                        </>
-                      )}
+                      <p className="mt-6 text-sm text-text-muted italic text-center">
+                        {selectedProject.catalog && selectedProject.catalog.length > 0 
+                          ? selectedProject.catalog[currentImageIndex].title 
+                          : 'Visual representation of the multi-step automation logic.'}
+                      </p>
                     </div>
-                    <p className="mt-6 text-sm text-text-muted italic text-center">
-                      {selectedProject.catalog && selectedProject.catalog.length > 0 
-                        ? selectedProject.catalog[currentImageIndex].title 
-                        : 'Visual representation of the multi-step automation logic.'}
-                    </p>
-                  </div>
+                  )}
 
                   {/* Right Side: Details */}
-                  <div className="p-10 lg:p-16 flex flex-col justify-center">
+                  <div className={`p-10 lg:p-16 flex flex-col justify-center ${hasVisuals ? '' : 'w-full'}`}>
                     <div className="flex items-center gap-4 mb-10">
                       {selectedProject.logoUrl && (
                         <div className="w-20 h-20 bg-card-dark rounded-2xl p-4 border border-border-dark shadow-xl">
