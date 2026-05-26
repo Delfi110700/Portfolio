@@ -149,9 +149,9 @@ const RESUME_DATA = {
       title: "GoHighLevel",
       description: "Workflow & Marketing Automation Ecosystem for agencies.",
       tags: ["GHL", "CRM", "SaaS"],
-      color: "text-brand-primary",
+      color: "text-emerald-500",
       isComingSoon: false,
-      logoUrl: "https://www.gohighlevel.com/wp-content/uploads/2023/07/cropped-favicon-new-192x192.png",
+      logoUrl: "/src/assets/images/ghl_bg_1779693692076.png",
       bgImage: "/src/assets/images/ghl_bg_1779693692076.png", 
       cta: "View Case Study >",
       technicalSummary: "Configured comprehensive GoHighLevel CRM pipelines and automated trigger response systems. Implemented customized client onboarding funnels, scheduled booking calendars, and automated lead nurturing sequences across SMS and Email channels.",
@@ -607,7 +607,7 @@ export default function App() {
                   setCurrentImageIndex(0);
                 }}
               >
-                <div className="aspect-video bg-card-dark overflow-hidden relative">
+                <div className="aspect-video bg-black overflow-hidden relative">
                   {(project as any).bgImage && (
                     <motion.img 
                       whileHover={{ scale: 1.1 }}
@@ -616,29 +616,29 @@ export default function App() {
                       className={`w-full h-full transition-all duration-700 object-cover ${
                         isDarkMode 
                           ? 'opacity-95 group-hover:opacity-100 brightness-110 group-hover:brightness-125 saturate-100' 
-                          : `${
-                              project.platform === 'Go High Level' 
-                                ? 'mix-blend-multiply opacity-85 group-hover:opacity-100 brightness-105 contrast-95 saturate-110' 
-                                : 'opacity-80 group-hover:opacity-95 contrast-110 brightness-105 saturate-105'
-                            }`
+                          : 'opacity-70 group-hover:opacity-85 brightness-95 group-hover:brightness-100 contrast-100 saturate-100'
                       }`}
                       referrerPolicy="no-referrer"
                     />
                   )}
                   
-                  <div className={`absolute inset-0 bg-gradient-to-t transition-opacity duration-700 ${
+                  <div className={`absolute inset-0 bg-gradient-to-t transition-all duration-700 ${
                     isDarkMode 
                       ? 'from-bg-dark/70 via-bg-dark/10 to-transparent group-hover:opacity-20' 
-                      : 'from-bg-dark/85 via-bg-dark/25 to-transparent group-hover:opacity-40'
+                      : 'from-black/80 via-black/25 to-transparent group-hover:opacity-40'
                   }`} />
                   <div className="absolute bottom-6 left-6 pr-6 flex items-center gap-4">
                     {project.logoUrl && (
-                      <div className="w-14 h-14 bg-card-dark backdrop-blur-sm rounded-xl p-3 flex items-center justify-center border border-border-dark shadow-2xl group-hover:scale-110 group-hover:bg-card-dark/80 transition-all duration-500">
+                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-500 ${
+                        project.platform === "Go High Level"
+                          ? "bg-white p-2 border border-white group-hover:bg-white"
+                          : "bg-card-dark border border-border-dark p-3 backdrop-blur-sm group-hover:bg-card-dark/80"
+                      }`}>
                         <img 
                           src={project.logoUrl} 
                           alt={`${project.platform} logo`} 
                           className={`w-full h-full object-contain transition-all duration-300 ${
-                            !isDarkMode && (project as any).invertInLight ? 'invert brightness-0' : ''
+                            project.platform !== "Go High Level" && !isDarkMode && (project as any).invertInLight ? 'invert brightness-0' : ''
                           }`}
                           referrerPolicy="no-referrer"
                           onError={(e) => {
@@ -795,7 +795,11 @@ export default function App() {
                   <div className={`p-10 lg:p-16 flex flex-col justify-center ${hasVisuals ? '' : 'w-full'}`}>
                     <div className="flex items-center gap-4 mb-10">
                       {selectedProject.logoUrl && (
-                        <div className="w-20 h-20 bg-card-dark rounded-2xl p-4 border border-border-dark shadow-xl">
+                        <div className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl ${
+                          selectedProject.platform === "Go High Level"
+                            ? "bg-white p-3 border border-white"
+                            : "bg-card-dark p-4 border border-border-dark"
+                        }`}>
                           <img src={selectedProject.logoUrl} alt="Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                         </div>
                       )}
