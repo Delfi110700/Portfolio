@@ -56,7 +56,7 @@ const RESUME_DATA = {
     {
       company: "Yondu",
       role: "Application Support",
-      location: "Quezon City",
+      location: "Quezon City, Philippines",
       period: "June 2025 - March 2026",
       highlights: [
         "Monitor ServiceNow Incoming Tickets, ensuring SLA adherence through proper prioritization and escalation.",
