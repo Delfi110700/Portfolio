@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 
+
 // --- Data ---
 const RESUME_DATA = {
   name: "Fidel Juan Resuello",
@@ -1047,6 +1048,7 @@ export default function App() {
           </motion.div>
         </div>
       </section>
+
 
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-border-dark">
