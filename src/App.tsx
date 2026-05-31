@@ -119,21 +119,14 @@ const RESUME_DATA = {
     {
       platform: "Zapier",
       title: "Zapier",
-      description: "Complex multi-step workflow logic with advanced paths and conditional branching.",
-      tags: ["Typeform", "Zapier", "ActiveCampaign", "Slack", "Gmail"],
+      description: "",
+      tags: [],
       color: "text-orange-500",
       logoUrl: "https://cdn.simpleicons.org/zapier/FF6600",
       bgImage: "/src/assets/images/zapier_bg_1779679133369.png",
       cta: "View Case Study >",
-      technicalSummary: "Architected a high-volume lead routing system using Zapier Paths. This workflow handles incoming Typeform responses, formats dates, routes data based on department (Sales, Accounting, Support, Comms), and manages contact synchronization with ActiveCampaign and instant team notifications via Slack.",
-      toolsUsed: ["Zapier", "Typeform", "ActiveCampaign", "Slack", "Gmail"],
-      workflowImage: "/src/assets/images/zapier_workflow_logic_1779091669955.png",
-      catalog: [
-        { 
-          image: "/src/assets/images/zapier_workflow_logic_1779091669955.png", 
-          title: "Main Workflow Logic & Branching" 
-        }
-      ]
+      technicalSummary: "",
+      toolsUsed: []
     },
     {
       platform: "Make",
@@ -370,7 +363,21 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const hasVisuals = selectedProject && (selectedProject.workflowImage || (selectedProject.catalog && selectedProject.catalog.length > 0));
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
+
+  useEffect(() => {
+    if (!enlargedImage) {
+      setIsImageZoomed(false);
+    }
+  }, [enlargedImage]);
+
+  const hasVisuals = selectedProject && (!!selectedProject.workflowImage || (selectedProject.catalog && selectedProject.catalog.length > 0));
+  const showDetails = !!(selectedProject && (
+    selectedProject.description || 
+    selectedProject.technicalSummary || 
+    (selectedProject.toolsUsed && selectedProject.toolsUsed.length > 0) || 
+    (selectedProject.tags && selectedProject.tags.length > 0)
+  ));
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -686,7 +693,7 @@ export default function App() {
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
-                className={`relative w-full ${hasVisuals ? 'max-w-6xl' : 'max-w-3xl'} max-h-[90vh] overflow-y-auto bg-bg-dark rounded-3xl border border-border-dark shadow-2xl`}
+                className={`relative w-full ${hasVisuals ? (showDetails ? 'max-w-6xl' : 'max-w-4xl') : 'max-w-3xl'} max-h-[90vh] overflow-y-auto bg-bg-dark rounded-3xl border border-border-dark shadow-2xl`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Close Button */}
@@ -697,10 +704,10 @@ export default function App() {
                   <X size={24} />
                 </button>
 
-                <div className={hasVisuals ? "grid lg:grid-cols-2" : "block"}>
+                <div className={hasVisuals && showDetails ? "grid lg:grid-cols-2" : "block"}>
                   {/* Left Side: Image/Workflow */}
                   {hasVisuals && (
-                    <div className="p-8 lg:p-12 bg-card-dark/50 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-border-dark">
+                    <div className={`p-8 lg:p-12 bg-card-dark/50 flex flex-col justify-center select-none ${hasVisuals && showDetails ? 'border-b lg:border-b-0 lg:border-r border-border-dark' : 'w-full'}`}>
                       <div className="flex items-center justify-between mb-4">
                         <div className={`text-xs font-mono uppercase tracking-widest ${selectedProject.color}`}>
                           {selectedProject.catalog && selectedProject.catalog.length > 0 
@@ -714,7 +721,7 @@ export default function App() {
                                 e.stopPropagation();
                                 setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
                               }}
-                              className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                              className="p-1.5 bg-card-dark hover:bg-white/10 rounded-full border border-border-dark text-white transition-colors cursor-pointer"
                             >
                               <ChevronLeft size={16} />
                             </button>
@@ -723,7 +730,7 @@ export default function App() {
                                 e.stopPropagation();
                                 setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
                               }}
-                              className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                              className="p-1.5 bg-card-dark hover:bg-white/10 rounded-full border border-border-dark text-white transition-colors cursor-pointer"
                             >
                               <ChevronRight size={16} />
                             </button>
@@ -732,20 +739,26 @@ export default function App() {
                       </div>
 
                       <div 
-                        onClick={() => setEnlargedImage(selectedProject.catalog && selectedProject.catalog.length > 0 
-                          ? selectedProject.catalog[currentImageIndex].image 
-                          : selectedProject.workflowImage)}
+                        onClick={() => {
+                          const imgToEnlarge = selectedProject.catalog && selectedProject.catalog.length > 0
+                            ? selectedProject.catalog[currentImageIndex].image
+                            : selectedProject.workflowImage;
+                          setEnlargedImage(imgToEnlarge);
+                        }}
                         className="relative group rounded-2xl overflow-hidden border border-border-dark shadow-2xl aspect-video bg-black/40 cursor-zoom-in"
                       >
                         <AnimatePresence mode="wait">
                           <motion.img 
                             key={currentImageIndex}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            src={selectedProject.catalog && selectedProject.catalog.length > 0 
-                              ? selectedProject.catalog[currentImageIndex].image 
-                              : selectedProject.workflowImage} 
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.98 }}
+                            transition={{ duration: 0.2 }}
+                            src={
+                              selectedProject.catalog && selectedProject.catalog.length > 0
+                                ? selectedProject.catalog[currentImageIndex].image
+                                : selectedProject.workflowImage
+                            } 
                             alt="Workflow Logic" 
                             className="w-full h-full object-contain"
                             referrerPolicy="no-referrer"
@@ -760,94 +773,99 @@ export default function App() {
                             <Maximize2 size={24} />
                           </div>
                         </div>
-                        
-                        {selectedProject.catalog && selectedProject.catalog.length > 1 && (
-                          <>
-                            <button 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setCurrentImageIndex(prev => (prev === 0 ? selectedProject.catalog.length - 1 : prev - 1));
-                              }}
-                              className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <ChevronLeft size={20} />
-                            </button>
-                            <button 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setCurrentImageIndex(prev => (prev === selectedProject.catalog.length - 1 ? 0 : prev + 1));
-                              }}
-                              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full border border-border-dark opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <ChevronRight size={20} />
-                            </button>
-                          </>
-                        )}
                       </div>
-                      <p className="mt-6 text-sm text-text-muted italic text-center">
-                        {selectedProject.catalog && selectedProject.catalog.length > 0 
-                          ? selectedProject.catalog[currentImageIndex].title 
-                          : 'Visual representation of the multi-step automation logic.'}
-                      </p>
+
+                      {/* Indicator Bullets for the slides */}
+                      {selectedProject.catalog && selectedProject.catalog.length > 1 && (
+                        <div className="flex justify-center flex-wrap gap-1.5 mt-4">
+                          {selectedProject.catalog.map((_: any, i: number) => (
+                            <button
+                              key={i}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentImageIndex(i);
+                              }}
+                              className={`w-2.5 h-2.5 rounded-full transition-colors cursor-pointer ${
+                                i === currentImageIndex 
+                                  ? 'bg-orange-500' 
+                                  : 'bg-white/25 hover:bg-white/50'
+                              }`}
+                              title={`Slide ${i + 1}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      {showDetails ? (
+                        <p className="mt-6 text-sm text-text-muted italic text-center">
+                          Visual representation of the multi-step automation logic. Click the image to expand details.
+                        </p>
+                      ) : (
+                        <p className="mt-6 text-sm text-text-muted/60 italic text-center">
+                          Click slide to expand into original ultra-high quality.
+                        </p>
+                      )}
                     </div>
                   )}
 
                   {/* Right Side: Details */}
-                  <div className={`p-10 lg:p-16 flex flex-col justify-center ${hasVisuals ? '' : 'w-full'}`}>
-                    <div className="flex items-center gap-4 mb-10">
-                      {selectedProject.logoUrl && (
-                        <div className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl ${
-                          selectedProject.platform === "Go High Level"
-                            ? "bg-white p-3 border border-white"
-                            : "bg-card-dark p-4 border border-border-dark"
-                        }`}>
-                          <img src={selectedProject.logoUrl} alt="Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                  {showDetails && (
+                    <div className={`p-10 lg:p-16 flex flex-col justify-center ${hasVisuals ? '' : 'w-full'}`}>
+                      <div className="flex items-center gap-4 mb-10">
+                        {selectedProject.logoUrl && (
+                          <div className={`w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl ${
+                            selectedProject.platform === "Go High Level"
+                              ? "bg-white p-3 border border-white"
+                              : "bg-card-dark p-4 border border-border-dark"
+                          }`}>
+                            <img src={selectedProject.logoUrl} alt="Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                          </div>
+                        )}
+                        <div>
+                          <h2 className={`text-5xl font-bold tracking-tighter ${selectedProject.color}`}>
+                            {selectedProject.title}
+                          </h2>
+                          <p className="text-text-muted font-medium text-lg">Case Study</p>
                         </div>
-                      )}
-                      <div>
-                        <h2 className={`text-5xl font-bold tracking-tighter ${selectedProject.color}`}>
-                          {selectedProject.title}
-                        </h2>
-                        <p className="text-text-muted font-medium text-lg">Case Study</p>
+                      </div>
+
+                      <div className="space-y-12">
+                        {(selectedProject.technicalSummary || selectedProject.description) && (
+                          <div>
+                            <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
+                              <Layout size={24} className={selectedProject.color} />
+                              Technical Summary
+                            </h3>
+                            <p className="text-text-muted leading-relaxed text-xl">
+                              {selectedProject.technicalSummary || selectedProject.description}
+                            </p>
+                          </div>
+                        )}
+
+                        {(selectedProject.toolsUsed?.length > 0 || selectedProject.tags?.length > 0) && (
+                          <div>
+                            <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                              <Cpu size={24} className={selectedProject.color} />
+                              Tools & Integration
+                            </h3>
+                            <div className="flex flex-wrap gap-4">
+                              {(selectedProject.toolsUsed || selectedProject.tags).map((tool: string, i: number) => (
+                                <span key={i} className="px-5 py-2.5 bg-card-dark border border-border-dark rounded-2xl text-base font-bold shadow-sm">
+                                  {tool}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
-
-                    <div className="space-y-12">
-                      {(selectedProject.technicalSummary || selectedProject.description) && (
-                        <div>
-                          <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
-                            <Layout size={24} className={selectedProject.color} />
-                            Technical Summary
-                          </h3>
-                          <p className="text-text-muted leading-relaxed text-xl">
-                            {selectedProject.technicalSummary || selectedProject.description}
-                          </p>
-                        </div>
-                      )}
-
-                      {(selectedProject.toolsUsed?.length > 0 || selectedProject.tags?.length > 0) && (
-                        <div>
-                          <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
-                            <Cpu size={24} className={selectedProject.color} />
-                            Tools & Integration
-                          </h3>
-                          <div className="flex flex-wrap gap-4">
-                            {(selectedProject.toolsUsed || selectedProject.tags).map((tool: string, i: number) => (
-                              <span key={i} className="px-5 py-2.5 bg-card-dark border border-border-dark rounded-2xl text-base font-bold shadow-sm">
-                                {tool}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
- 
+
         {/* Fullscreen Lightbox */}
         <AnimatePresence>
           {enlargedImage && (
@@ -855,25 +873,51 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/95 backdrop-blur-lg"
+              className="fixed inset-0 z-[110] flex flex-col items-center justify-center bg-black/95 backdrop-blur-lg select-none"
               onClick={() => setEnlargedImage(null)}
             >
+              {/* Close Button */}
               <button 
-                className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white z-[120]"
+                className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white z-[120] cursor-pointer"
+                onClick={() => setEnlargedImage(null)}
+                title="Close"
+              >
+                <X size={28} />
+              </button>
+
+              {/* User Guide Toast */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-5 py-2.5 bg-black/70 rounded-full border border-white/10 text-xs font-mono text-white/90 uppercase tracking-widest pointer-events-none z-[120] shadow-xl">
+                {isImageZoomed ? "Click image to zoom out" : "Click image to view original ultra-high quality"}
+              </div>
+
+              {/* Viewport wrapper supporting overflow scroll when zoomed */}
+              <div 
+                className={`w-full h-full p-6 flex ${
+                  isImageZoomed 
+                    ? 'overflow-auto cursor-zoom-out justify-start items-start md:p-16' 
+                    : 'items-center justify-center'
+                }`}
                 onClick={() => setEnlargedImage(null)}
               >
-                <X size={32} />
-              </button>
-              <motion.img 
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                src={enlargedImage}
-                alt="Enlarged Workflow"
-                className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-                referrerPolicy="no-referrer"
-              />
+                <motion.img 
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.95, opacity: 0 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                  src={enlargedImage}
+                  alt="Enlarged Workflow"
+                  className={`rounded-xl shadow-2xl transition-all duration-300 ${
+                    isImageZoomed 
+                      ? "max-w-none max-h-none w-auto h-auto cursor-zoom-out" 
+                      : "max-w-full max-h-[85vh] object-contain cursor-zoom-in"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsImageZoomed(!isImageZoomed);
+                  }}
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
